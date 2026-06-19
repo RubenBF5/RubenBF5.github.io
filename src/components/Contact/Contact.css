@@ -109,7 +109,17 @@
   display: flex;
   gap: 15px;
   justify-content: center;
+  align-items: stretch;
   width: 100%;
+}
+
+.contact__cv-downloads {
+  display: flex;
+  gap: 10px;
+}
+
+.contact__cv-downloads .btn {
+  white-space: nowrap;
 }
 
 /* Footer structure */
@@ -146,8 +156,20 @@
     flex-direction: column;
     gap: 12px;
   }
+
+  .contact__cv-downloads {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
   
   .contact__actions .btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact__cv-downloads {
+    grid-template-columns: 1fr;
   }
 }

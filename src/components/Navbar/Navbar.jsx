@@ -75,12 +75,11 @@ export default function Navbar() {
           ))}
           <li>
             <a
-              href="/resume.pdf"
+              href="#contact"
               className="navbar__cta"
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={(e) => handleNavClick(e, '#contact')}
             >
-              Curriculum
+              Descargar CV
             </a>
           </li>
         </ul>
