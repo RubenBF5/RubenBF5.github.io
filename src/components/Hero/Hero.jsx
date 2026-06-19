@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import HireMatch from './HireMatch';
 import './Hero.css';
+
+const HeroScene3D = lazy(() => import('./HeroScene3D'));
 
 const roles = [
   'Front-End Developer',
@@ -14,6 +16,26 @@ export default function Hero() {
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(
+    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+  const [supportsWebGL] = useState(() => {
+    const canvas = document.createElement('canvas');
+    return Boolean(
+      window.WebGLRenderingContext
+      && (canvas.getContext('webgl2') || canvas.getContext('webgl'))
+    );
+  });
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updateMotionPreference = () => setReducedMotion(mediaQuery.matches);
+
+    updateMotionPreference();
+    mediaQuery.addEventListener('change', updateMotionPreference);
+
+    return () => mediaQuery.removeEventListener('change', updateMotionPreference);
+  }, []);
 
   // Scroll listener to toggle cover/split modes
   useEffect(() => {
@@ -69,6 +91,13 @@ export default function Hero() {
 
   return (
     <section className={`hero ${scrolled ? 'hero--split' : 'hero--cover'}`} id="hero">
+      {!reducedMotion && supportsWebGL ? (
+        <Suspense fallback={<div className="hero__scene-placeholder" aria-hidden="true" />}>
+          <HeroScene3D />
+        </Suspense>
+      ) : (
+        <div className="hero__scene-placeholder" aria-hidden="true" />
+      )}
       <div className="hero__grid" />
 
       <div className="hero__content container">
