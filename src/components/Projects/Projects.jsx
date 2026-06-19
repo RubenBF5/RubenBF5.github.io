@@ -7,6 +7,7 @@ const PROJECTS = [
     title: 'Consejo Ciudadano CDMX',
     category: 'Desarrollador Web Freelance',
     meta: 'Dic 2025 - May 2026',
+    url: 'https://www.consejociudadanomx.org',
     stack: ['Laravel', 'Python', 'JavaScript', 'MySQL', 'HTML', 'CSS', 'NodeJS'],
     desc: 'Trabajé sobre una arquitectura monolítica Laravel para mejorar la experiencia de usuario del sitio público y del panel administrativo. Rediseñé la interfaz aplicando principios UX/UI, implementé módulos de capacitaciones, editor de newsletter, traducción automática de noticias con inteligencia artificial, paginación de boletines, búsqueda conectada a base de datos y un panel privado para monitoreo de correos.'
   },
@@ -15,6 +16,7 @@ const PROJECTS = [
     title: 'M3mento',
     category: 'Front-End / UX-UI',
     meta: 'Ago 2024 - Actual',
+    url: 'https://m3mento.com.mx',
     stack: ['JavaScript', 'HTML', 'CSS', 'UX/UI', 'Figma', 'Photoshop', 'Blender'],
     desc: 'Desarrollo y programación de interfaces web responsivas enfocadas en experiencia de usuario. Doy mantenimiento y mejora continua a interfaces digitales, optimizo usabilidad, rendimiento, accesibilidad y carga, creo recursos gráficos y 3D para páginas web y campañas, y reduje la tasa de rebote en 5% mejorando navegación y diseño de la página de inicio.'
   },
@@ -107,6 +109,31 @@ export default function Projects() {
 
                 <h3 className="project-card__title display-text">{project.title}</h3>
                 <p className="project-card__desc">{project.desc}</p>
+
+                {project.url && (
+                  <a
+                    href={project.url}
+                    className="project-card__site-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Visitar sitio web de ${project.title}`}
+                  >
+                    Visitar sitio
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M7 17 17 7M7 7h10v10" />
+                    </svg>
+                  </a>
+                )}
 
                 <div className="project-card__stack">
                   {project.stack.map((tech) => (

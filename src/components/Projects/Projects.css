@@ -151,8 +151,39 @@
   font-size: 0.9rem;
   color: var(--text-secondary);
   line-height: 1.5;
-  margin-bottom: 25px;
-  flex: 1; /* Pushes stack badge panel to bottom */
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.project-card__site-link {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 8px 13px;
+  border: var(--border-glass);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.04);
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.project-card__site-link:hover {
+  color: var(--bg-primary);
+  background-color: var(--text-primary);
+  border-color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.project-card__site-link svg {
+  flex-shrink: 0;
 }
 
 /* Stack badges */
