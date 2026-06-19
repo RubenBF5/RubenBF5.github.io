@@ -1,0 +1,94 @@
+.globe-container {
+  width: 100%;
+  max-width: 340px;
+  min-height: 380px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 0 auto;
+  padding: 26px 24px 22px;
+  border: var(--border-glass);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255, 255, 255, 0.08), transparent 42%),
+    rgba(9, 13, 22, 0.46);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.globe-container::before {
+  content: '';
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.035);
+  border-radius: var(--radius-md);
+  pointer-events: none;
+}
+
+.globe-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.globe-copy strong {
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+}
+
+.globe-kicker {
+  color: var(--text-muted);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.globe-canvas {
+  width: min(100%, 292px);
+  aspect-ratio: 1;
+  cursor: grab;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  z-index: 1;
+}
+
+.globe-canvas:active {
+  cursor: grabbing;
+}
+
+.globe-overlay {
+  position: relative;
+  z-index: 1;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  pointer-events: none;
+  background-color: rgba(9, 13, 22, 0.4);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .globe-container {
+    max-width: 100%;
+    min-height: 330px;
+    padding: 22px 18px 20px;
+  }
+
+  .globe-canvas {
+    width: min(100%, 240px);
+  }
+}

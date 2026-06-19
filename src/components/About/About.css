@@ -1,0 +1,416 @@
+/* --- About Section (Horizontal Cards Slider) --- */
+
+.about {
+  position: relative;
+  height: 220vh; /* Scrollable distance for track translation */
+  background-color: transparent;
+  border-bottom: var(--border-subtle);
+}
+
+.about__sticky-wrapper {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.about__container {
+  overflow: hidden; /* Clips any off-screen horizontal cards */
+}
+
+.about__carousel-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.about__carousel-label {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.about__carousel-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.about__carousel-button {
+  width: 34px;
+  height: 34px;
+  border: var(--border-glass);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.about__carousel-button:hover:not(:disabled) {
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.07);
+  transform: translateY(-1px);
+}
+
+.about__carousel-button:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+.about__carousel-count {
+  min-width: 34px;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+/* Horizontal Track wrapper */
+.about__scroll-wrapper {
+  width: 100%;
+  overflow: hidden;
+  padding: 20px 34px 20px 0; /* padding for top/bottom hover shadows */
+  position: relative;
+}
+
+.about__scroll-wrapper::before,
+.about__scroll-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 56px;
+  pointer-events: none;
+}
+
+.about__scroll-wrapper::before {
+  left: 0;
+  background: linear-gradient(90deg, var(--bg-primary), transparent);
+  opacity: 0.5;
+}
+
+.about__scroll-wrapper::after {
+  right: 0;
+  background: linear-gradient(270deg, var(--bg-primary), transparent);
+}
+
+.about__scroll-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  will-change: transform;
+  transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Base Card Styling */
+.about__card {
+  flex-shrink: 0;
+  min-height: 400px;
+  padding: 28px;
+  background-color: rgba(15, 23, 42, 0.68) !important;
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    inset 0 -24px 48px rgba(3, 7, 18, 0.18),
+    0 18px 40px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.about__card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-4px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.075),
+    inset 0 -24px 48px rgba(3, 7, 18, 0.16),
+    0 16px 42px rgba(0, 0, 0, 0.42);
+}
+
+/* Card 1: Biography Intro Card (Wider layout) */
+.about__card--intro {
+  width: min(440px, calc(100vw - 48px));
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.about__card-title {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.about__card-subtitle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+
+.about__card-text {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.52;
+  margin-bottom: 10px;
+}
+
+.about__card-details {
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.about__card-detail {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.8fr) minmax(0, 1.2fr);
+  align-items: start;
+  gap: 14px;
+  justify-content: space-between;
+  font-size: 0.84rem;
+}
+
+.about__card-detail-label {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.about__card-detail-value {
+  color: var(--text-primary);
+  font-weight: 600;
+  text-align: right;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+/* Content layout (Split layout) */
+.about__content-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  align-items: center;
+  gap: clamp(28px, 5vw, 64px);
+  width: 100%;
+}
+
+.about__cards-column {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.about__globe-column {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Cards 2-5: Stack cards (Vertical items structure) */
+.about__card--stack {
+  width: 280px;
+  justify-content: flex-start;
+  gap: 25px;
+}
+
+.about__card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.about__card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background-color: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+}
+
+.about__card-category-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+}
+
+/* Stack Skill badges inside cards */
+.about__card-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.about__card-badge {
+  font-size: 0.85rem;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  background-color: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.085);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  text-align: center;
+}
+
+.about__card:hover .about__card-badge {
+  border-color: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+}
+
+.about__card-badge:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.02);
+}
+
+.about__carousel-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 2px;
+}
+
+.about__carousel-dot {
+  width: 26px;
+  height: 3px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.12);
+  transition: width var(--transition-fast), background-color var(--transition-fast), opacity var(--transition-fast);
+  opacity: 0.65;
+}
+
+.about__carousel-dot--active {
+  width: 42px;
+  background: var(--text-primary);
+  opacity: 1;
+}
+
+/* Responsiveness sizes */
+@media (max-width: 992px) {
+  .about {
+    height: auto !important;
+    padding: 80px 0;
+  }
+
+  .about__sticky-wrapper {
+    position: relative !important;
+    top: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .about__content-layout {
+    flex-direction: column;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .about__cards-column {
+    width: 100%;
+    overflow: visible !important;
+  }
+
+  .about__scroll-wrapper {
+    overflow-x: auto !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 20px;
+    margin: 0 -20px;
+  }
+
+  .about__scroll-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .about__scroll-track {
+    transform: none !important;
+    padding-right: 20px;
+  }
+
+  .about__scroll-wrapper::before,
+  .about__scroll-wrapper::after {
+    display: none;
+  }
+
+  .about__card {
+    min-height: 400px;
+    padding: 24px;
+  }
+
+  .about__card--intro {
+    width: min(420px, calc(100vw - 48px));
+  }
+
+  .about__card--stack {
+    width: 280px;
+  }
+
+  .about__globe-column {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .about__carousel-actions {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .about__card--intro {
+    width: 360px;
+  }
+
+  .about__card--stack {
+    width: 260px;
+  }
+  
+  .about__card-title {
+    font-size: 1.5rem;
+  }
+  
+  .about__card-text {
+    font-size: 0.86rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about__card--intro {
+    width: 300px;
+  }
+  
+  .about__card--stack {
+    width: 240px;
+  }
+
+  .about__scroll-track {
+    gap: 16px;
+  }
+}
