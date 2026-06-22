@@ -86,7 +86,7 @@ export default function Projects() {
             </p>
           </div>
           <p className="projects__instruction mono-text">
-            Pasa el cursor sobre un volumen
+            Presiona un volumen para consultar
           </p>
         </div>
 
@@ -112,8 +112,6 @@ export default function Projects() {
                     <button
                       type="button"
                       className={`project-book${isActive ? ' project-book--active' : ''}`}
-                      onMouseEnter={() => selectProject(project.id)}
-                      onFocus={() => selectProject(project.id)}
                       onClick={() => selectProject(project.id)}
                       aria-pressed={isActive}
                       aria-label={`Ver detalles de ${project.title}`}
