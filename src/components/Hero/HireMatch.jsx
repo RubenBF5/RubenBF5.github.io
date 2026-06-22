@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import './HireMatch.css';
 
 const MATCH_DATA = {
@@ -58,6 +58,27 @@ const MATCH_DATA = {
 export default function HireMatch() {
   const [activeTab, setActiveTab] = useState('experiencia');
   const [isFlipped, setIsFlipped] = useState(false);
+  const containerRef = useRef(null);
+
+  const handlePointerMove = (event) => {
+    const container = containerRef.current;
+    if (!container || event.pointerType === 'touch') return;
+
+    const rect = container.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width;
+    const y = (event.clientY - rect.top) / rect.height;
+
+    container.style.setProperty('--hire-light-x', `${x * 100}%`);
+    container.style.setProperty('--hire-light-y', `${y * 100}%`);
+  };
+
+  const handlePointerLeave = () => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    container.style.setProperty('--hire-light-x', '50%');
+    container.style.setProperty('--hire-light-y', '50%');
+  };
 
   const handleTabClick = (tabKey) => {
     if (activeTab === tabKey && isFlipped) {
@@ -82,10 +103,16 @@ export default function HireMatch() {
   const currentData = MATCH_DATA[activeTab];
 
   return (
-    <div className="hire-container">
+    <div
+      ref={containerRef}
+      className="hire-container"
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+    >
       {/* 3D Flipping Card Container */}
-      <div className={`hire-card ${isFlipped ? 'hire-card--flipped' : ''}`}>
-        <div className="hire-card__inner">
+      <div className="hire-card-stage">
+        <div className={`hire-card ${isFlipped ? 'hire-card--flipped' : ''}`}>
+          <div className="hire-card__inner">
           
           {/* FRONT FACE: Profile Intro */}
           <div className="hire-card__front glass-card">
@@ -149,69 +176,78 @@ export default function HireMatch() {
             </div>
           </div>
 
+          </div>
         </div>
       </div>
 
       {/* Control Buttons (Tabs) */}
       <div className="hire-controls">
-        <button
-          type="button"
-          onClick={() => handleTabClick('experiencia')}
-          className={`hire-ctrl-btn ${activeTab === 'experiencia' && isFlipped ? 'hire-ctrl-btn--active' : ''}`}
-          title="Ver Experiencia"
-          aria-label="Ver Experiencia"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-          </svg>
-          <span className="hire-ctrl-btn__label">Experiencia</span>
-        </button>
+        <div className="hire-ctrl-orbit">
+          <button
+            type="button"
+            onClick={() => handleTabClick('experiencia')}
+            className={`hire-ctrl-btn ${activeTab === 'experiencia' && isFlipped ? 'hire-ctrl-btn--active' : ''}`}
+            title="Ver Experiencia"
+            aria-label="Ver Experiencia"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+            </svg>
+            <span className="hire-ctrl-btn__label">Experiencia</span>
+          </button>
+        </div>
 
-        <button
-          type="button"
-          onClick={() => handleTabClick('stack')}
-          className={`hire-ctrl-btn ${activeTab === 'stack' && isFlipped ? 'hire-ctrl-btn--active' : ''}`}
-          title="Ver Stack"
-          aria-label="Ver Stack"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-            <line x1="8" y1="21" x2="16" y2="21" />
-            <line x1="12" y1="17" x2="12" y2="21" />
-          </svg>
-          <span className="hire-ctrl-btn__label">Stack</span>
-        </button>
+        <div className="hire-ctrl-orbit">
+          <button
+            type="button"
+            onClick={() => handleTabClick('stack')}
+            className={`hire-ctrl-btn ${activeTab === 'stack' && isFlipped ? 'hire-ctrl-btn--active' : ''}`}
+            title="Ver Stack"
+            aria-label="Ver Stack"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
+            </svg>
+            <span className="hire-ctrl-btn__label">Stack</span>
+          </button>
+        </div>
 
-        <button
-          type="button"
-          onClick={() => handleTabClick('modalidad')}
-          className={`hire-ctrl-btn ${activeTab === 'modalidad' && isFlipped ? 'hire-ctrl-btn--active' : ''}`}
-          title="Ver Modalidad"
-          aria-label="Ver Modalidad"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="10" />
-            <line x1="2" y1="12" x2="22" y2="12" />
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-          </svg>
-          <span className="hire-ctrl-btn__label">Esquema</span>
-        </button>
+        <div className="hire-ctrl-orbit">
+          <button
+            type="button"
+            onClick={() => handleTabClick('modalidad')}
+            className={`hire-ctrl-btn ${activeTab === 'modalidad' && isFlipped ? 'hire-ctrl-btn--active' : ''}`}
+            title="Ver Modalidad"
+            aria-label="Ver Modalidad"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="2" y1="12" x2="22" y2="12" />
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+            </svg>
+            <span className="hire-ctrl-btn__label">Esquema</span>
+          </button>
+        </div>
 
-        <button
-          type="button"
-          onClick={() => handleTabClick('enfoque')}
-          className={`hire-ctrl-btn ${activeTab === 'enfoque' && isFlipped ? 'hire-ctrl-btn--active' : ''}`}
-          title="Ver Enfoque"
-          aria-label="Ver Enfoque"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polygon points="12 2 2 7 12 12 22 7 12 2" />
-            <polyline points="2 17 12 22 22 17" />
-            <polyline points="2 12 12 17 22 12" />
-          </svg>
-          <span className="hire-ctrl-btn__label">Enfoque</span>
-        </button>
+        <div className="hire-ctrl-orbit">
+          <button
+            type="button"
+            onClick={() => handleTabClick('enfoque')}
+            className={`hire-ctrl-btn ${activeTab === 'enfoque' && isFlipped ? 'hire-ctrl-btn--active' : ''}`}
+            title="Ver Enfoque"
+            aria-label="Ver Enfoque"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2" />
+              <polyline points="2 17 12 22 22 17" />
+              <polyline points="2 12 12 17 22 12" />
+            </svg>
+            <span className="hire-ctrl-btn__label">Enfoque</span>
+          </button>
+        </div>
       </div>
     </div>
   );

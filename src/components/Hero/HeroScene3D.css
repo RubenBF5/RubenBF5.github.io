@@ -5,7 +5,7 @@
   overflow: hidden;
   pointer-events: none;
   opacity: 0;
-  animation: hero-scene-reveal 1.4s 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: hero-particles-reveal 1.3s 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .hero-scene::before {
@@ -14,8 +14,8 @@
   inset: 0;
   z-index: 2;
   background:
-    radial-gradient(circle at 50% 48%, transparent 0 14%, rgba(3, 7, 18, 0.08) 38%, rgba(3, 7, 18, 0.7) 78%),
-    linear-gradient(90deg, rgba(3, 7, 18, 0.55), transparent 28%, transparent 72%, rgba(3, 7, 18, 0.55));
+    radial-gradient(circle at 50% 48%, transparent 0 20%, rgba(3, 7, 18, 0.08) 47%, rgba(3, 7, 18, 0.76) 90%),
+    linear-gradient(90deg, rgba(3, 7, 18, 0.56), transparent 30%, transparent 70%, rgba(3, 7, 18, 0.56));
 }
 
 .hero-scene__canvas {
@@ -23,32 +23,30 @@
   inset: 0;
   width: 100% !important;
   height: 100% !important;
-  filter: saturate(0.72) contrast(1.06);
+  filter: contrast(1.08);
 }
 
 .hero-scene__fallback {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: min(54vw, 620px);
+  width: min(58vw, 650px);
   aspect-ratio: 1;
-  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 50%;
-  transform: translate(-50%, -50%);
   background:
-    radial-gradient(circle at 38% 34%, rgba(255, 255, 255, 0.12), transparent 18%),
-    radial-gradient(circle, rgba(148, 163, 184, 0.08), transparent 62%);
-  filter: blur(0.2px);
+    radial-gradient(circle at 40% 34%, rgba(255, 255, 255, 0.1), transparent 13%),
+    radial-gradient(circle, rgba(134, 148, 172, 0.085), transparent 64%);
+  transform: translate(-50%, -50%);
 }
 
-@keyframes hero-scene-reveal {
+@keyframes hero-particles-reveal {
   from {
     opacity: 0;
-    transform: scale(1.06);
+    transform: scale(1.08);
   }
 
   to {
-    opacity: 0.9;
+    opacity: 0.92;
     transform: scale(1);
   }
 }
@@ -56,7 +54,7 @@
 @media (max-width: 768px) {
   .hero-scene {
     opacity: 0;
-    animation-name: hero-scene-reveal-mobile;
+    animation-name: hero-particles-reveal-mobile;
   }
 
   .hero-scene__canvas {
@@ -64,11 +62,11 @@
   }
 
   .hero-scene__fallback {
-    width: min(90vw, 500px);
+    width: min(94vw, 520px);
   }
 }
 
-@keyframes hero-scene-reveal-mobile {
+@keyframes hero-particles-reveal-mobile {
   from {
     opacity: 0;
   }

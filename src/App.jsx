@@ -7,6 +7,7 @@ import Hero from './components/Hero/Hero';
 import About from './components/About/About';
 import Projects from './components/Projects/Projects';
 import Contact from './components/Contact/Contact';
+import CursorGlow from './components/CursorGlow/CursorGlow';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -18,6 +19,9 @@ function App() {
 
       {/* Background star field */}
       {!loading && <Starfield />}
+
+      {/* Ambient cursor light */}
+      {!loading && <CursorGlow />}
 
       {/* Navbar placed outside animated wrapper to prevent parent transform from breaking fixed positioning */}
       {!loading && <Navbar />}

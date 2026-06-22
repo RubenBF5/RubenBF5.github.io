@@ -1,31 +1,60 @@
 /* --- Hire Match Interactive Recruiter Card --- */
 
 .hire-container {
+  --hire-light-x: 50%;
+  --hire-light-y: 50%;
   width: 100%;
   max-width: 440px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 500px;
   z-index: 10;
+}
+
+.hire-card-stage {
+  position: relative;
+  width: 100%;
+  height: 360px;
+  flex: 0 0 360px;
+  isolation: isolate;
+}
+
+.hire-card-stage::before {
+  content: '';
+  position: absolute;
+  inset: 12% 8% -8%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(151, 167, 195, 0.15), transparent 66%);
+  filter: blur(30px);
+  animation: hire-shadow-float 5.6s ease-in-out infinite;
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 /* 3D Flip Card Setups */
 .hire-card {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: 330px;
-  perspective: 1200px; /* Perspective depth for 3D rotation */
+  height: 360px;
+  perspective: 1200px;
 }
 
 .hire-card__inner {
-  position: relative;
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   text-align: left;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  transform-style: preserve-3d; /* Retain 3D spatial layout for faces */
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transform-origin: center;
+  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
-/* Rotated state */
 .hire-card--flipped .hire-card__inner {
   transform: rotateY(180deg);
 }
@@ -51,8 +80,52 @@
   overflow: hidden;
 }
 
+/* CursorGlow.css assigns position: relative to every .glass-card.
+   This more specific rule keeps both faces stacked in the same stage. */
+.hire-card__front.glass-card,
+.hire-card__back.glass-card {
+  position: absolute;
+  inset: 0;
+}
+
+.hire-card__front {
+  transform: rotateY(0deg);
+  pointer-events: auto;
+}
+
 .hire-card__back {
-  transform: rotateY(180deg); /* Render back face upside down horizontally */
+  transform: rotateY(180deg);
+  pointer-events: none;
+}
+
+.hire-card--flipped .hire-card__front {
+  pointer-events: none;
+}
+
+.hire-card--flipped .hire-card__back {
+  pointer-events: auto;
+}
+
+.hire-card__front::before,
+.hire-card__back::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: radial-gradient(
+    300px circle at var(--hire-light-x) var(--hire-light-y),
+    rgba(255, 255, 255, 0.11),
+    rgba(136, 154, 186, 0.035) 32%,
+    transparent 66%
+  );
+  pointer-events: none;
+}
+
+.hire-card__front > *,
+.hire-card__back > * {
+  position: relative;
+  z-index: 2;
 }
 
 /* Card Header */
@@ -243,8 +316,36 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
-  margin-top: 25px;
+  flex: 0 0 auto;
+  margin-top: 34px;
+  padding: 0 6px 10px;
   width: 100%;
+  position: relative;
+  z-index: 20;
+}
+
+.hire-ctrl-orbit {
+  animation: hire-control-float 4.2s ease-in-out infinite;
+}
+
+.hire-ctrl-orbit:nth-child(2) {
+  animation-delay: -1.1s;
+  animation-duration: 4.8s;
+}
+
+.hire-ctrl-orbit:nth-child(3) {
+  animation-delay: -2.2s;
+  animation-duration: 5.2s;
+}
+
+.hire-ctrl-orbit:nth-child(4) {
+  animation-delay: -3.1s;
+  animation-duration: 4.5s;
+}
+
+.hire-ctrl-orbit:hover,
+.hire-ctrl-orbit:focus-within {
+  animation-play-state: paused;
 }
 
 .hire-ctrl-btn {
@@ -260,6 +361,7 @@
   font-weight: 600;
   transition: all var(--transition-base);
   cursor: pointer;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
 }
 
 .hire-ctrl-btn svg {
@@ -271,7 +373,8 @@
   background-color: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.15);
   color: var(--text-primary);
-  transform: translateY(-1px);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.3);
 }
 
 .hire-ctrl-btn:hover svg {
@@ -295,13 +398,46 @@
   border-color: var(--accent-indigo);
   color: var(--bg-primary);
   opacity: 0.95;
-  transform: translateY(-1px);
+  transform: translateY(-3px);
+}
+
+@keyframes hire-shadow-float {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.96);
+  }
+
+  50% {
+    opacity: 0.82;
+    transform: scale(1.03);
+  }
+}
+
+@keyframes hire-control-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotateZ(-0.8deg);
+  }
+
+  50% {
+    transform: translate3d(0, -7px, 12px) rotateZ(0.8deg);
+  }
 }
 
 /* Responsive configurations */
 @media (max-width: 480px) {
+  .hire-container {
+    min-height: 520px;
+  }
+
+  .hire-card-stage {
+    height: 370px;
+    flex-basis: 370px;
+  }
+
   .hire-card {
-    height: 350px;
+    height: 370px;
   }
   
   .hire-card__front,
@@ -323,10 +459,22 @@
 
   .hire-controls {
     gap: 8px;
+    margin-top: 28px;
   }
 
   .hire-ctrl-btn {
     padding: 6px 12px;
     font-size: 0.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hire-card__inner {
+    transition: none;
+  }
+
+  .hire-card-stage::before,
+  .hire-ctrl-orbit {
+    animation: none;
   }
 }

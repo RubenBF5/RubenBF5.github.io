@@ -1,12 +1,81 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import './HeroScene3D.css';
 
-const createParticlePositions = () => {
-  const count = 90;
+const vertexShader = `
+  uniform float uTime;
+  uniform vec2 uPointer;
+  uniform float uPointerActive;
+  uniform float uPixelRatio;
+  uniform float uAspect;
+
+  attribute float aRandom;
+  attribute float aScale;
+
+  varying float vStrength;
+
+  void main() {
+    vec3 basePosition = position;
+    vec3 direction = normalize(basePosition);
+
+    float waveA = sin(direction.x * 8.0 + uTime * 0.55);
+    float waveB = cos(direction.y * 11.0 - uTime * 0.42);
+    float waveC = sin((direction.z + direction.x) * 13.0 + uTime * 0.3);
+    float surfaceNoise = waveA * waveB * 0.11 + waveC * 0.045;
+
+    vec3 displaced = direction * (length(basePosition) + surfaceNoise);
+
+    vec4 modelPosition = modelMatrix * vec4(displaced, 1.0);
+    vec4 viewPosition = viewMatrix * modelPosition;
+    vec4 baseProjectedPosition = projectionMatrix * viewPosition;
+    vec2 screenPosition = baseProjectedPosition.xy / baseProjectedPosition.w;
+    vec2 pointerDelta = screenPosition - uPointer;
+    pointerDelta.x *= uAspect;
+
+    float pointerDistance = length(pointerDelta);
+    float pointerInfluence =
+      (1.0 - smoothstep(0.035, 0.28, pointerDistance))
+      * uPointerActive;
+
+    vec2 repulsionDirection = normalize(pointerDelta + vec2(0.0001));
+    repulsionDirection.x /= uAspect;
+    viewPosition.xy += repulsionDirection * pointerInfluence * 0.46;
+    viewPosition.z += pointerInfluence * 0.08;
+
+    gl_Position = projectionMatrix * viewPosition;
+
+    float depthScale = 1.0 / max(1.0, -viewPosition.z);
+    gl_PointSize = (2.0 + aScale * 2.4 + pointerInfluence * 1.2) * uPixelRatio * depthScale * 5.2;
+
+    vStrength = 0.38 + aRandom * 0.42 + pointerInfluence * 0.3;
+  }
+`;
+
+const fragmentShader = `
+  varying float vStrength;
+
+  void main() {
+    vec2 center = gl_PointCoord - vec2(0.5);
+    float distanceToCenter = length(center);
+    float alpha = 1.0 - smoothstep(0.12, 0.5, distanceToCenter);
+
+    vec3 color = mix(
+      vec3(0.43, 0.47, 0.55),
+      vec3(0.95, 0.97, 1.0),
+      vStrength
+    );
+
+    gl_FragColor = vec4(color, alpha * vStrength);
+  }
+`;
+
+const createParticleCloud = (count) => {
   const positions = new Float32Array(count * 3);
-  let seed = 1847;
+  const randomValues = new Float32Array(count);
+  const scales = new Float32Array(count);
+  const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+  let seed = 9157;
 
   const random = () => {
     seed = (seed * 16807) % 2147483647;
@@ -14,124 +83,126 @@ const createParticlePositions = () => {
   };
 
   for (let index = 0; index < count; index += 1) {
-    const radius = 2.2 + random() * 2.7;
-    const angle = random() * Math.PI * 2;
-    const verticalAngle = Math.acos(2 * random() - 1);
+    const y = 1 - (index / (count - 1)) * 2;
+    const radiusAtHeight = Math.sqrt(1 - y * y);
+    const angle = goldenAngle * index;
+    const radius = 1.55 + (random() - 0.5) * 0.14;
 
-    positions[index * 3] = radius * Math.sin(verticalAngle) * Math.cos(angle);
-    positions[index * 3 + 1] = radius * Math.cos(verticalAngle);
-    positions[index * 3 + 2] = radius * Math.sin(verticalAngle) * Math.sin(angle);
+    positions[index * 3] = Math.cos(angle) * radiusAtHeight * radius;
+    positions[index * 3 + 1] = y * radius;
+    positions[index * 3 + 2] = Math.sin(angle) * radiusAtHeight * radius;
+    randomValues[index] = random();
+    scales[index] = 0.45 + random() * 0.8;
   }
 
-  return positions;
+  return { positions, randomValues, scales };
 };
 
-const PARTICLE_POSITIONS = createParticlePositions();
-
-function OrbitalSculpture() {
-  const sculptureRef = useRef(null);
-  const coreRef = useRef(null);
-  const pointer = useRef({ x: 0, y: 0 });
-  const scrollProgress = useRef(0);
+function ParticlePlanet() {
+  const pointsRef = useRef(null);
+  const materialRef = useRef(null);
+  const pointerTarget = useRef(new THREE.Vector2(0, 0));
+  const smoothPointer = useRef(new THREE.Vector2(0, 0));
+  const pointerActivityTarget = useRef(0);
+  const pointerActivity = useRef(0);
+  const particleCloud = useMemo(
+    () => createParticleCloud(window.innerWidth <= 768 ? 3400 : 6200),
+    []
+  );
 
   useEffect(() => {
     const handlePointerMove = (event) => {
-      pointer.current.x = (event.clientX / window.innerWidth) * 2 - 1;
-      pointer.current.y = -((event.clientY / window.innerHeight) * 2 - 1);
+      pointerActivityTarget.current = 1;
+      pointerTarget.current.set(
+        (event.clientX / window.innerWidth) * 2 - 1,
+        -((event.clientY / window.innerHeight) * 2 - 1)
+      );
     };
 
-    const handleScroll = () => {
-      scrollProgress.current = Math.min(window.scrollY / window.innerHeight, 1);
+    const handlePointerLeave = () => {
+      pointerActivityTarget.current = 0;
+    };
+
+    const handleResize = () => {
+      if (materialRef.current) {
+        materialRef.current.uniforms.uAspect.value =
+          window.innerWidth / window.innerHeight;
+      }
     };
 
     window.addEventListener('pointermove', handlePointerMove, { passive: true });
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    window.addEventListener('resize', handleResize, { passive: true });
+    document.documentElement.addEventListener('mouseleave', handlePointerLeave);
 
     return () => {
       window.removeEventListener('pointermove', handlePointerMove);
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+      document.documentElement.removeEventListener('mouseleave', handlePointerLeave);
     };
   }, []);
 
   useFrame((state, delta) => {
-    if (!sculptureRef.current || !coreRef.current) return;
+    if (!pointsRef.current || !materialRef.current) return;
 
-    const targetRotationX = pointer.current.y * 0.16 - 0.08;
-    const targetRotationY = pointer.current.x * 0.22 + scrollProgress.current * 0.35;
-    const easing = 1 - Math.exp(-delta * 2.8);
-
-    sculptureRef.current.rotation.x = THREE.MathUtils.lerp(
-      sculptureRef.current.rotation.x,
-      targetRotationX,
+    const easing = 1 - Math.exp(-delta * 3.4);
+    smoothPointer.current.lerp(pointerTarget.current, easing);
+    pointerActivity.current = THREE.MathUtils.lerp(
+      pointerActivity.current,
+      pointerActivityTarget.current,
       easing
     );
-    sculptureRef.current.rotation.y = THREE.MathUtils.lerp(
-      sculptureRef.current.rotation.y,
-      targetRotationY,
+
+    materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
+    materialRef.current.uniforms.uPointer.value.copy(smoothPointer.current);
+    materialRef.current.uniforms.uPointerActive.value = pointerActivity.current;
+
+    pointsRef.current.rotation.x = THREE.MathUtils.lerp(
+      pointsRef.current.rotation.x,
+      smoothPointer.current.y * 0.24 - 0.08,
       easing
     );
-    sculptureRef.current.rotation.z += delta * 0.035;
-
-    coreRef.current.rotation.x += delta * 0.08;
-    coreRef.current.rotation.y += delta * 0.12;
-
-    const floatOffset = Math.sin(state.clock.elapsedTime * 0.55) * 0.08;
-    sculptureRef.current.position.y = floatOffset - scrollProgress.current * 0.2;
+    pointsRef.current.rotation.y += delta * 0.055;
+    pointsRef.current.rotation.y += smoothPointer.current.x * delta * 0.055;
+    pointsRef.current.rotation.z = THREE.MathUtils.lerp(
+      pointsRef.current.rotation.z,
+      smoothPointer.current.x * -0.08,
+      easing
+    );
+    pointsRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.055;
   });
 
   return (
-    <group ref={sculptureRef} rotation={[-0.08, 0, 0.12]}>
-      <mesh ref={coreRef}>
-        <icosahedronGeometry args={[1.42, 2]} />
-        <meshPhysicalMaterial
-          color="#d9dde5"
-          roughness={0.3}
-          metalness={0.78}
-          clearcoat={0.8}
-          clearcoatRoughness={0.22}
-          transparent
-          opacity={0.28}
+    <points ref={pointsRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          args={[particleCloud.positions, 3]}
         />
-      </mesh>
-
-      <mesh scale={1.01}>
-        <icosahedronGeometry args={[1.42, 2]} />
-        <meshBasicMaterial
-          color="#ffffff"
-          wireframe
-          transparent
-          opacity={0.2}
+        <bufferAttribute
+          attach="attributes-aRandom"
+          args={[particleCloud.randomValues, 1]}
         />
-      </mesh>
-
-      <mesh rotation={[Math.PI / 2.8, 0.3, 0.2]}>
-        <torusGeometry args={[2.02, 0.012, 8, 160]} />
-        <meshBasicMaterial color="#c7ceda" transparent opacity={0.32} />
-      </mesh>
-
-      <mesh rotation={[0.55, Math.PI / 2.5, -0.3]}>
-        <torusGeometry args={[2.42, 0.009, 8, 160]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={0.16} />
-      </mesh>
-
-      <points>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[PARTICLE_POSITIONS, 3]}
-          />
-        </bufferGeometry>
-        <pointsMaterial
-          color="#ffffff"
-          size={0.025}
-          sizeAttenuation
-          transparent
-          opacity={0.45}
-          depthWrite={false}
+        <bufferAttribute
+          attach="attributes-aScale"
+          args={[particleCloud.scales, 1]}
         />
-      </points>
-    </group>
+      </bufferGeometry>
+      <shaderMaterial
+        ref={materialRef}
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+        transparent
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+        uniforms={{
+          uTime: { value: 0 },
+          uPointer: { value: new THREE.Vector2(0, 0) },
+          uPointerActive: { value: 0 },
+          uPixelRatio: { value: Math.min(window.devicePixelRatio, 1.5) },
+          uAspect: { value: window.innerWidth / window.innerHeight }
+        }}
+      />
+    </points>
   );
 }
 
@@ -141,19 +212,16 @@ export default function HeroScene3D() {
       <div className="hero-scene__fallback" />
       <Canvas
         className="hero-scene__canvas"
-        camera={{ position: [0, 0, 7.2], fov: 42 }}
+        camera={{ position: [0, 0, 5.8], fov: 42 }}
         dpr={[1, 1.5]}
         frameloop="always"
         gl={{
           alpha: true,
-          antialias: true,
+          antialias: false,
           powerPreference: 'high-performance'
         }}
       >
-        <ambientLight intensity={0.7} />
-        <directionalLight position={[3, 4, 5]} intensity={2.5} color="#ffffff" />
-        <pointLight position={[-4, -2, 3]} intensity={9} color="#78849a" />
-        <OrbitalSculpture />
+        <ParticlePlanet />
       </Canvas>
     </div>
   );
