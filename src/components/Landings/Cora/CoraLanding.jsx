@@ -81,6 +81,12 @@ const consultationTypes = [
 ];
 
 export default function CoraLanding() {
+  const scrollToSection = (event) => {
+    event.preventDefault();
+    const sectionId = event.currentTarget.getAttribute('href').slice(1);
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   useEffect(() => {
     const previousTitle = document.title;
     document.title = 'Dra. Cora Barrientos | Medicina Interna e Infectología';
@@ -91,14 +97,14 @@ export default function CoraLanding() {
     <div className="cora-page">
       <header className="cora-header">
         <div className="cora-container cora-header__inner">
-          <a className="cora-header__brand" href="#cora-inicio" aria-label="Dra. Cora Barrientos, ir al inicio">
+          <a className="cora-header__brand" href="#cora-inicio" onClick={scrollToSection} aria-label="Dra. Cora Barrientos, ir al inicio">
             <span className="cora-header__mark" aria-hidden="true">C</span>
             <span><strong>Dra. Cora Barrientos</strong><small>Medicina Interna · Infectología</small></span>
           </a>
           <nav className="cora-header__nav" aria-label="Secciones de la landing">
-            <a href="#cora-servicios">Servicios</a>
-            <a href="#cora-diagnostico">Diagnóstico</a>
-            <a href="#cora-consulta">Consulta</a>
+            <a href="#cora-servicios" onClick={scrollToSection}>Servicios</a>
+            <a href="#cora-diagnostico" onClick={scrollToSection}>Diagnóstico</a>
+            <a href="#cora-consulta" onClick={scrollToSection}>Consulta</a>
           </nav>
           <a className="cora-header__contact" href={whatsappUrl} target="_blank" rel="noopener noreferrer">Agendar cita <span aria-hidden="true">↗</span></a>
         </div>
@@ -113,7 +119,7 @@ export default function CoraLanding() {
               <p>Dra. Corazón de Jesús Barrientos Flores<br />Medicina Interna · Infectología · VIH</p>
               <div className="cora-hero__actions">
                 <a className="cora-button cora-button--light" href={whatsappUrl} target="_blank" rel="noopener noreferrer">Agenda tu consulta <span aria-hidden="true">↗</span></a>
-                <a className="cora-text-link" href="#cora-servicios">Conoce los servicios <span aria-hidden="true">↓</span></a>
+                <a className="cora-text-link" href="#cora-servicios" onClick={scrollToSection}>Conoce los servicios <span aria-hidden="true">↓</span></a>
               </div>
               <div className="cora-hero__note">Atención presencial y en línea <span aria-hidden="true">·</span> Agenda por WhatsApp</div>
             </div>
