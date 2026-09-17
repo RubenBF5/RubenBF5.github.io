@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import Preloader from './components/Preloader/Preloader';
 import Starfield from './components/Starfield/Starfield';
 import ScrollReveal from './components/ScrollReveal/ScrollReveal';
@@ -9,8 +9,48 @@ import Projects from './components/Projects/Projects';
 import Contact from './components/Contact/Contact';
 import CursorGlow from './components/CursorGlow/CursorGlow';
 
+const DuskLanding = lazy(() => import('./components/Landings/Dusk/DuskLanding'));
+const NoirLanding = lazy(() => import('./components/Landings/Noir/NoirLanding'));
+const M3mentoLanding = lazy(() => import('./components/Landings/M3mento/M3mentoLanding'));
+const NexusLanding = lazy(() => import('./components/Landings/Nexus/NexusLanding'));
+
+function parseRoute() {
+  const hash = window.location.hash.toLowerCase();
+  if (hash.startsWith('#/projects/dusk')) return 'dusk';
+  if (hash.startsWith('#/projects/noir')) return 'noir';
+  if (hash.startsWith('#/projects/m3mento')) return 'm3mento';
+  if (hash.startsWith('#/projects/nexus')) return 'nexus';
+  return null;
+}
+
 function App() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => !parseRoute());
+  const [route, setRoute] = useState(() => parseRoute());
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      const newRoute = parseRoute();
+      setRoute(newRoute);
+      if (newRoute) {
+        window.scrollTo(0, 0);
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  // Dedicated landing page view
+  if (route) {
+    return (
+      <Suspense fallback={<div style={{ minHeight: '100vh', background: '#08080c' }} />}>
+        {route === 'dusk' && <DuskLanding />}
+        {route === 'noir' && <NoirLanding />}
+        {route === 'm3mento' && <M3mentoLanding />}
+        {route === 'nexus' && <NexusLanding />}
+      </Suspense>
+    );
+  }
 
   return (
     <>

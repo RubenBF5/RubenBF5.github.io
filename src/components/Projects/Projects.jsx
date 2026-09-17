@@ -4,64 +4,77 @@ import './Projects.css';
 const PROJECTS = [
   {
     id: 1,
+    title: 'DUSK',
+    shortTitle: 'DUSK',
+    category: 'App Móvil Fitness & HealthTech',
+    meta: '2025 — Actual',
+    url: '#/projects/dusk',
+    linkLabel: 'Explorar Landing',
+    isInternal: true,
+    stack: ['React Native', 'TypeScript', 'Expo SDK 54', 'NativeWind', 'Zustand', 'Supabase'],
+    desc: 'Landing page y aplicación premium offline-first para atletas de alto rendimiento. Integra arquitectura de running, levantamiento y nutrición con sincronización bidireccional en Supabase, GPS en background, Live Activities en iOS y diseño visual de alto impacto.',
+    accent: '#00f0ff',
+    height: 350,
+    width: 96
+  },
+  {
+    id: 2,
+    title: 'NOIR',
+    shortTitle: 'NOIR',
+    category: 'Streaming & Audio Experience',
+    meta: '2025 — Producto',
+    url: '#/projects/noir',
+    linkLabel: 'Explorar Landing',
+    isInternal: true,
+    stack: ['React', 'Web Audio API', 'CSS Grid', 'Framer Effects', 'UX Sound Design'],
+    desc: 'Landing page conceptual para servicio de música de alta fidelidad. Interfaz oscura inmersiva con reproductor interactivo en tiempo real, visualizador de frecuencias de audio, curaduría de vinilos exclusivos y diseño editorial refinado.',
+    accent: '#d4af37',
+    height: 330,
+    width: 90
+  },
+  {
+    id: 3,
+    title: 'M3mento',
+    shortTitle: 'M3mento',
+    category: 'Streetwear Concept & E-Commerce',
+    meta: '2024 — 2026',
+    url: '#/projects/m3mento',
+    linkLabel: 'Explorar Concepto',
+    isInternal: true,
+    stack: ['React', 'CSS Architecture', 'Blender 3D', 'UX/UI', 'Figma'],
+    desc: 'Experiencia digital y concepto e-commerce para marca de ropa contemporánea. Diseño brutalista e industrial con lookbook interactivo, selector de tallas y variantes, visor de prendas modeladas en 3D y flujo de compra optimizado.',
+    accent: '#e2e8f0',
+    height: 310,
+    width: 88
+  },
+  {
+    id: 4,
+    title: 'Nexus AI',
+    shortTitle: 'Nexus AI',
+    category: 'B2B SaaS / Orquestación IA',
+    meta: '2026 — SaaS Platform',
+    url: '#/projects/nexus',
+    linkLabel: 'Explorar Landing',
+    isInternal: true,
+    stack: ['React', 'TypeScript', 'Tailwind/CSS', 'Data Viz', 'Bento Grid UX'],
+    desc: 'Landing page B2B SaaS de alto rendimiento para plataforma de agentes autónomos y automatización de flujos de ingeniería. Incluye Bento Grid de características, simulador interactivo de workflows, toggle de precios y métricas en tiempo real.',
+    accent: '#818cf8',
+    height: 340,
+    width: 94
+  },
+  {
+    id: 5,
     title: 'Consejo Ciudadano CDMX',
     shortTitle: 'Consejo Ciudadano',
     category: 'Desarrollador Web Freelance',
     meta: 'Dic 2025 — May 2026',
     url: 'https://www.consejociudadanomx.org',
+    linkLabel: 'Visitar sitio real',
+    isInternal: false,
     stack: ['Laravel', 'Python', 'JavaScript', 'MySQL', 'HTML', 'CSS', 'NodeJS'],
-    desc: 'Trabajé sobre una arquitectura monolítica Laravel para mejorar la experiencia de usuario del sitio público y del panel administrativo. Rediseñé la interfaz aplicando principios UX/UI, implementé módulos de capacitaciones, editor de newsletter, traducción automática de noticias con inteligencia artificial, paginación de boletines, búsqueda conectada a base de datos y un panel privado para monitoreo de correos.',
-    accent: '#d7d9de',
-    height: 330,
-    width: 106
-  },
-  {
-    id: 2,
-    title: 'M3mento',
-    shortTitle: 'M3mento',
-    category: 'Front-End / UX-UI',
-    meta: 'Ago 2024 — Actual',
-    url: 'https://m3mento.com.mx',
-    stack: ['JavaScript', 'HTML', 'CSS', 'UX/UI', 'Figma', 'Photoshop', 'Blender'],
-    desc: 'Desarrollo y programación de interfaces web responsivas enfocadas en experiencia de usuario. Doy mantenimiento y mejora continua a interfaces digitales, optimizo usabilidad, rendimiento, accesibilidad y carga, creo recursos gráficos y 3D para páginas web y campañas, y reduje la tasa de rebote en 5% mejorando navegación y diseño de la página de inicio.',
-    accent: '#868d9a',
-    height: 292,
-    width: 88
-  },
-  {
-    id: 3,
-    title: 'DUSK',
-    shortTitle: 'DUSK',
-    category: 'App Móvil Fitness',
-    meta: '2025 — Actual',
-    stack: ['React Native', 'TypeScript', 'Expo SDK 54', 'NativeWind', 'Zustand', 'Supabase'],
-    desc: 'Aplicación premium offline-first para atletas con módulos de running, gimnasio y nutrición. Integra sincronización bidireccional con Supabase, GPS en segundo plano, Live Activities/Dynamic Island para iOS y log de macronutrientes con APIs USDA y Open Food Facts.',
-    accent: '#b8bec8',
-    height: 350,
-    width: 92
-  },
-  {
-    id: 4,
-    title: 'WisEcho',
-    shortTitle: 'WisEcho',
-    category: 'UX Research / Accesibilidad',
-    meta: 'EBAC — En curso',
-    stack: ['WCAG', 'Benchmarking', 'Investigación UX', 'Business Model Canvas', 'Accesibilidad'],
-    desc: 'Red social accesible para adultos mayores. Lideré análisis heurístico WCAG, benchmarking frente a competencia, definición de usuarios y stakeholders mediante entrevistas simuladas y una propuesta de negocio centrada en accesibilidad y simplicidad.',
-    accent: '#686e79',
-    height: 310,
-    width: 86
-  },
-  {
-    id: 5,
-    title: 'Reto Nescafé',
-    shortTitle: 'Reto Nescafé',
-    category: 'Lean UX / MVP',
-    meta: 'EBAC — En curso',
-    stack: ['Lean UX', 'MVP', 'Objetivos SMART', 'Validación', 'UX Metrics'],
-    desc: 'MVP de recetario digital para validar hipótesis de producto con objetivos SMART. Diseñé el MVP “Recetario Nescafé” con foco en contenido viral, recetas frías, métricas de clics en recetas y entrevistas para validación cualitativa.',
-    accent: '#c4c7ce',
-    height: 276,
+    desc: 'Trabajo sobre arquitectura monolítica Laravel para mejorar la experiencia de usuario del sitio público y del panel administrativo. Rediseño UX/UI, módulos de capacitaciones, editor de boletines, traducción con IA y optimización de base de datos.',
+    accent: '#94a3b8',
+    height: 290,
     width: 98
   }
 ];
@@ -174,10 +187,10 @@ export default function Projects() {
                   <a
                     href={activeProject.url}
                     className="project-detail__link"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    target={activeProject.isInternal ? '_self' : '_blank'}
+                    rel={activeProject.isInternal ? undefined : 'noopener noreferrer'}
                   >
-                    Visitar sitio
+                    {activeProject.linkLabel || 'Visitar sitio'}
                     <svg
                       width="17"
                       height="17"
