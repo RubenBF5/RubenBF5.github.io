@@ -120,7 +120,6 @@
 .projects__library,
 .project-book,
 .btn,
-.navbar,
 .navbar__link,
 .navbar__cta,
 .hire-ctrl-btn,
@@ -128,6 +127,10 @@
 .contact__copy-btn,
 .about__carousel-button {
   position: relative;
+  isolation: isolate;
+}
+
+.navbar {
   isolation: isolate;
 }
 

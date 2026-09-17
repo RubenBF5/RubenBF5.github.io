@@ -2,7 +2,7 @@
   position: fixed;
   top: 20px;
   left: 50%;
-  transform: translate(-50%, -15px);
+  transform: translateX(-50%);
   width: max-content;
   max-width: 95%;
   height: 56px;
@@ -18,18 +18,12 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 
               inset 0 1px 0 rgba(255, 255, 255, 0.1);
   padding: 0 8px 0 24px; /* Give room to CTA at the right edge */
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
-              background-color 0.3s ease, 
-              border-color 0.3s ease;
+  transition: background-color 0.3s ease,
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
 }
 
 .navbar--scrolled {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translate(-50%, 0);
   background-color: rgba(11, 15, 25, 0.55);
   border-color: rgba(255, 255, 255, 0.12);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.45), 
