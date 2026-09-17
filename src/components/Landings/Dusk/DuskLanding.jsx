@@ -1,62 +1,27 @@
 import { useState } from 'react';
 import LandingHeader from '../LandingHeader';
+import DuskGallery from './DuskGallery';
+import duskLogo from '../../../assets/dusk-logo.png';
 import './DuskLanding.css';
 
 export default function DuskLanding() {
   const [activeTab, setActiveTab] = useState('running');
   const [selectedZone, setSelectedZone] = useState('zone2');
 
-  const modes = {
-    running: {
-      title: 'Modo Running & Trail',
-      stat1: { label: 'Distancia', value: '7.82 km' },
-      stat2: { label: 'Ritmo Medio', value: '4:24 /km' },
-      stat3: { label: 'Frecuencia', value: '158 bpm' },
-      stat4: { label: 'Cadencia', value: '172 spm' },
-      activityText: 'Paseo de la Reforma — 12 km Tempo Run',
-      badge: 'GPS ACTIVO'
-    },
-    strength: {
-      title: 'Modo Hipertrofia & Gym',
-      stat1: { label: 'Volumen', value: '14,280 kg' },
-      stat2: { label: 'Series Totales', value: '18 sets' },
-      stat3: { label: 'RPE Promedio', value: '8.5' },
-      stat4: { label: 'Descanso Rest.', value: '01:15' },
-      activityText: 'Día de Pierna — Sentadilla Pesada 4x6',
-      badge: 'TIMER REPOSO'
-    },
-    nutrition: {
-      title: 'Módulo Nutrición & Macros',
-      stat1: { label: 'Calorías', value: '2,420 kcal' },
-      stat2: { label: 'Proteína', value: '185 g' },
-      stat3: { label: 'Carbohidratos', value: '260 g' },
-      stat4: { label: 'Grasas', value: '62 g' },
-      activityText: 'Comida Post-Entreno • 680 kcal sincronizadas',
-      badge: 'USDA SYNC'
-    }
-  };
-
   const zones = {
-    zone2: { name: 'Zona 2 (Resistencia Base)', bpm: '130 - 148 BPM', desc: 'Máxima oxidación de grasas y construcción mitocondrial sin fatiga excesiva.' },
-    zone3: { name: 'Zona 3 (Ritmo Aeróbico)', bpm: '149 - 162 BPM', desc: 'Desarrollo de eficiencia cardiovascular para fondos de media y larga distancia.' },
-    zone4: { name: 'Zona 4 (Umbral Lactato)', bpm: '163 - 176 BPM', desc: 'Entrenamiento de tolerancia al lactato y ritmo de carrera en 10K/21K.' },
-    zone5: { name: 'Zona 5 (VO2 Máx)', bpm: '177+ BPM', desc: 'Potencia neuromuscular máxima en intervalos de alta intensidad.' }
+    zone2: { name: 'Zona 2 (Resistencia Base)', range: '130 – 148', color: '#2d9f7b', desc: 'Máxima oxidación de grasas y construcción mitocondrial sin fatiga excesiva.' },
+    zone3: { name: 'Zona 3 (Ritmo Aeróbico)', range: '149 – 162', color: '#d69a31', desc: 'Desarrollo de eficiencia cardiovascular para fondos de media y larga distancia.' },
+    zone4: { name: 'Zona 4 (Umbral Lactato)', range: '163 – 176', color: '#e84c1e', desc: 'Entrenamiento de tolerancia al lactato y ritmo de carrera en 10K/21K.' },
+    zone5: { name: 'Zona 5 (VO2 Máx)', range: '177+', color: '#c83d48', desc: 'Potencia neuromuscular máxima en intervalos de alta intensidad.' }
   };
-
-  const currentMode = modes[activeTab];
 
   return (
     <div className="dusk-page">
       <LandingHeader
         brandName="DUSK"
         brandTag="Athletic OS"
-        accentColor="#00f0ff"
-        navLinks={[
-          { label: 'Características', href: '#features' },
-          { label: 'Modos de Rendimiento', href: '#modes' },
-          { label: 'Zonas Cardíacas', href: '#zones' },
-          { label: 'Arquitectura', href: '#architecture' }
-        ]}
+        accentColor="#e11d48"
+        showPortfolioCta={false}
       />
 
       {/* HERO SECTION */}
@@ -65,8 +30,8 @@ export default function DuskLanding() {
         <div className="dusk-container dusk-hero__grid">
           <div className="dusk-hero__content">
             <div className="dusk-pill">
-              <span className="dusk-pill__dot" />
-              <span>Offline-First Mobile Architecture • v1.4</span>
+              <span className="dusk-pulse-dot" />
+              <span>Lanzamiento Diciembre 2025 — Beta Privada Activa</span>
             </div>
             
             <h1 className="dusk-hero__title">
@@ -83,20 +48,28 @@ export default function DuskLanding() {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-2 .6-2.65 1.36-.58.66-1.08 1.73-.95 2.76 1.01.08 2.05-.52 2.68-1.27z"/>
                 </svg>
-                <span>Descargar en App Store</span>
+                <span>Registrar en Beta — iOS</span>
               </a>
               <a href="#modes" className="dusk-btn dusk-btn--secondary">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M3.609 1.814L13.792 12 3.61 22.186a2.41 2.41 0 0 1-.22-.328V2.142c.07-.116.144-.227.22-.328zm11.235 11.238l2.093 2.093-11.458 6.616 9.365-8.71zm0-2.104l-9.365-8.71 11.458 6.616-2.093 2.094zm1.484 1.052l3.353 1.936c1.173.677 1.173 1.789 0 2.466l-3.353 1.936-2.296-2.296 2.296-2.042z"/>
                 </svg>
-                <span>Google Play</span>
+                <span>Android — Próximamente</span>
               </a>
+            </div>
+
+            <div className="dusk-launch-badge">
+              <span className="dusk-launch-badge__icon">📅</span>
+              <div>
+                <strong>Lanzamiento: Diciembre 2025</strong>
+                <span>Únete a la lista de espera y obtén 3 meses gratis al lanzamiento</span>
+              </div>
             </div>
 
             <div className="dusk-stats-strip">
               <div className="dusk-stat-item">
-                <span className="dusk-stat-number">4.9 ★</span>
-                <span className="dusk-stat-label">Calificación iOS</span>
+                <span className="dusk-stat-number">Beta</span>
+                <span className="dusk-stat-label">Acceso Anticipado iOS</span>
               </div>
               <div className="dusk-stat-item">
                 <span className="dusk-stat-number">&lt; 15ms</span>
@@ -109,75 +82,16 @@ export default function DuskLanding() {
             </div>
           </div>
 
-          {/* PHONE MOCKUP INTERACTIVE */}
+          {/* Dusk splash screen */}
           <div className="dusk-hero__device-area">
-            <div className="dusk-phone">
-              <div className="dusk-phone__island">
-                <div className="dusk-phone__camera" />
-                <div className="dusk-phone__island-live">
-                  <span className="dusk-pulse-dot" />
-                  <span>Dusk Live • {currentMode.stat1.value}</span>
-                </div>
-              </div>
+            <div className="dusk-phone-wrap">
+              <div className="dusk-phone-btn dusk-phone-btn--volume-up" aria-hidden="true" />
+              <div className="dusk-phone-btn dusk-phone-btn--volume-down" aria-hidden="true" />
+              <div className="dusk-phone-btn dusk-phone-btn--power" aria-hidden="true" />
 
-              <div className="dusk-phone__screen">
-                <div className="dusk-phone__header">
-                  <div>
-                    <span className="dusk-phone__sub">SESIÓN ACTIVA</span>
-                    <h3 className="dusk-phone__title">{currentMode.title}</h3>
-                  </div>
-                  <span className="dusk-phone__badge">{currentMode.badge}</span>
-                </div>
-
-                <div className="dusk-phone__activity-box">
-                  <span className="dusk-phone__activity-icon">⚡</span>
-                  <p>{currentMode.activityText}</p>
-                </div>
-
-                <div className="dusk-phone__metrics-grid">
-                  <div className="dusk-phone__metric-card">
-                    <span className="dusk-phone__m-lbl">{currentMode.stat1.label}</span>
-                    <span className="dusk-phone__m-val">{currentMode.stat1.value}</span>
-                  </div>
-                  <div className="dusk-phone__metric-card">
-                    <span className="dusk-phone__m-lbl">{currentMode.stat2.label}</span>
-                    <span className="dusk-phone__m-val">{currentMode.stat2.value}</span>
-                  </div>
-                  <div className="dusk-phone__metric-card">
-                    <span className="dusk-phone__m-lbl">{currentMode.stat3.label}</span>
-                    <span className="dusk-phone__m-val dusk-phone__m-val--accent">{currentMode.stat3.value}</span>
-                  </div>
-                  <div className="dusk-phone__metric-card">
-                    <span className="dusk-phone__m-lbl">{currentMode.stat4.label}</span>
-                    <span className="dusk-phone__m-val">{currentMode.stat4.value}</span>
-                  </div>
-                </div>
-
-                {/* Animated heart rate wave */}
-                <div className="dusk-phone__telemetry">
-                  <div className="dusk-phone__wave-header">
-                    <span>Telemetría en Vivo</span>
-                    <span className="dusk-phone__live-tag">PULSO ESTABLE</span>
-                  </div>
-                  <div className="dusk-phone__wave-bars">
-                    <span style={{ height: '40%' }} />
-                    <span style={{ height: '65%' }} />
-                    <span style={{ height: '85%' }} />
-                    <span style={{ height: '50%' }} />
-                    <span style={{ height: '95%' }} />
-                    <span style={{ height: '70%' }} />
-                    <span style={{ height: '60%' }} />
-                    <span style={{ height: '80%' }} />
-                    <span style={{ height: '90%' }} />
-                    <span style={{ height: '45%' }} />
-                  </div>
-                </div>
-
-                <div className="dusk-phone__nav-bar">
-                  <span className="dusk-phone__nav-item dusk-phone__nav-item--active">Running</span>
-                  <span className="dusk-phone__nav-item">Fuerza</span>
-                  <span className="dusk-phone__nav-item">Nutrición</span>
-                  <span className="dusk-phone__nav-item">Ajustes</span>
+              <div className="dusk-phone">
+                <div className="dusk-phone__screen">
+                  <img className="dusk-phone__logo" src={duskLogo} alt="Dusk" />
                 </div>
               </div>
             </div>
@@ -185,13 +99,15 @@ export default function DuskLanding() {
         </div>
       </section>
 
+      <DuskGallery />
+
       {/* INTERACTIVE MODE PICKER */}
       <section className="dusk-section" id="modes">
         <div className="dusk-container">
           <div className="dusk-section-header">
             <span className="dusk-tag">INTERFAZ MULTI-DISCIPLINA</span>
             <h2 className="dusk-section-title">Diseñado para cada dimensión atlética</h2>
-            <p className="dusk-section-sub">Cambia entre disciplinas y experimenta cómo la UI se adapta a las necesidades biomecánicas de cada sesión.</p>
+            <p className="dusk-section-sub">Explora las disciplinas de entrenamiento para las que está diseñada Dusk.</p>
           </div>
 
           <div className="dusk-mode-selector">
@@ -234,7 +150,7 @@ export default function DuskLanding() {
         </div>
       </section>
 
-      {/* BENTO GRID FEATURES */}
+      {/* FEATURE CARDS */}
       <section className="dusk-section dusk-section--darker" id="features">
         <div className="dusk-container">
           <div className="dusk-section-header">
@@ -244,7 +160,7 @@ export default function DuskLanding() {
           </div>
 
           <div className="dusk-bento">
-            <div className="dusk-bento__card dusk-bento__card--large">
+            <div className="dusk-bento__card">
               <div className="dusk-bento__icon">📡</div>
               <h3>Offline-First con Sincronización Silenciosa</h3>
               <p>
@@ -278,21 +194,19 @@ export default function DuskLanding() {
               </p>
             </div>
 
-            <div className="dusk-bento__card dusk-bento__card--wide">
+            <div className="dusk-bento__card">
               <div className="dusk-bento__icon">⚡</div>
-              <div>
-                <h3>Arquitectura Zero-Lag con Zustand & NativeWind</h3>
-                <p>
-                  Estado global atómico desacoplado y renderizado a 120 FPS sin re-renders innecesarios durante entrenamientos exigentes.
-                </p>
-              </div>
+              <h3>Arquitectura Zero-Lag con Zustand & NativeWind</h3>
+              <p>
+                Estado global atómico desacoplado y renderizado a 120 FPS sin re-renders innecesarios durante entrenamientos exigentes.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
       {/* HEART RATE ZONE SELECTOR */}
-      <section className="dusk-section" id="zones">
+      <section className="dusk-section dusk-section--zones" id="zones">
         <div className="dusk-container">
           <div className="dusk-section-header">
             <span className="dusk-tag">TELEMETRÍA CARDIOVASCULAR</span>
@@ -307,18 +221,43 @@ export default function DuskLanding() {
                   key={key}
                   type="button"
                   className={`dusk-zone-tab ${selectedZone === key ? 'dusk-zone-tab--active' : ''}`}
+                  style={{ '--zone-color': zones[key].color }}
+                  aria-pressed={selectedZone === key}
                   onClick={() => setSelectedZone(key)}
                 >
+                  <span className="dusk-zone-tab__dot" aria-hidden="true" />
                   <span className="dusk-zone-tab__title">{zones[key].name}</span>
-                  <span className="dusk-zone-tab__bpm">{zones[key].bpm}</span>
+                  <span className="dusk-zone-tab__bpm">{zones[key].range} BPM</span>
                 </button>
               ))}
             </div>
 
-            <div className="dusk-zone-display">
-              <span className="dusk-zone-display__bpm">{zones[selectedZone].bpm}</span>
+            <div className="dusk-zone-display" style={{ '--zone-color': zones[selectedZone].color }} aria-live="polite">
+              <div className="dusk-zone-display__top">
+                <span>RANGO SELECCIONADO · Z{selectedZone.replace('zone', '')}</span>
+                <span className="dusk-zone-display__heart" aria-hidden="true">♥</span>
+              </div>
+              <div className="dusk-zone-display__reading">
+                <strong>{zones[selectedZone].range}</strong>
+                <span>BPM</span>
+              </div>
               <h3 className="dusk-zone-display__title">{zones[selectedZone].name}</h3>
               <p className="dusk-zone-display__desc">{zones[selectedZone].desc}</p>
+              <div className="dusk-zone-display__scale" role="img" aria-label={`Escala de zonas cardíacas: ${zones[selectedZone].name} seleccionada`}>
+                <span className="dusk-zone-display__scale-title">ESCALA DE ESFUERZO</span>
+                <div className="dusk-zone-display__scale-track" aria-hidden="true">
+                  {Object.keys(zones).map((key) => (
+                    <span
+                      key={key}
+                      className={selectedZone === key ? 'dusk-zone-display__segment dusk-zone-display__segment--active' : 'dusk-zone-display__segment'}
+                      style={{ '--segment-color': zones[key].color }}
+                    />
+                  ))}
+                </div>
+                <div className="dusk-zone-display__scale-labels" aria-hidden="true">
+                  {Object.keys(zones).map((key) => <span key={key}>Z{key.replace('zone', '')}</span>)}
+                </div>
+              </div>
               <div className="dusk-zone-display__status">
                 <span className="dusk-pulse-dot" />
                 <span>Monitoreo continuo por sensores Bluetooth LE & HealthKit</span>
@@ -332,7 +271,7 @@ export default function DuskLanding() {
       <footer className="dusk-footer">
         <div className="dusk-container dusk-footer__box">
           <h2>Construye la mejor versión de tu disciplina.</h2>
-          <p>DUSK está disponible en fase beta privada para iOS y Android.</p>
+          <p>DUSK está en beta privada para iOS. Android llegará próximamente.</p>
           <div className="dusk-hero__actions">
             <button 
               type="button" 

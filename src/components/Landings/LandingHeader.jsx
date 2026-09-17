@@ -1,4 +1,3 @@
-import React from 'react';
 import './LandingHeader.css';
 
 export default function LandingHeader({
@@ -6,6 +5,7 @@ export default function LandingHeader({
   brandTag,
   accentColor = '#6366f1',
   navLinks = [],
+  showPortfolioCta = true,
   onBack
 }) {
   const handleBack = (e) => {
@@ -41,23 +41,27 @@ export default function LandingHeader({
           </div>
         </div>
 
-        <nav className="landing-nav__menu" aria-label="Navegación del producto">
-          {navLinks.map((link) => (
-            <a key={link.href} href={link.href} className="landing-nav__link">
-              {link.label}
-            </a>
-          ))}
-        </nav>
+        {navLinks.length > 0 && (
+          <nav className="landing-nav__menu" aria-label="Navegación del producto">
+            {navLinks.map((link) => (
+              <a key={link.href} href={link.href} className="landing-nav__link">
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        )}
 
-        <div className="landing-nav__actions">
-          <button
-            type="button"
-            onClick={handleBack}
-            className="landing-nav__cta"
-          >
-            Ver Portafolio
-          </button>
-        </div>
+        {showPortfolioCta && (
+          <div className="landing-nav__actions">
+            <button
+              type="button"
+              onClick={handleBack}
+              className="landing-nav__cta"
+            >
+              Ver Portafolio
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );

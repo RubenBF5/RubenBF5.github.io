@@ -1,69 +1,13 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import noirDemo from '../../assets/noir/noir-demo.m4v?url';
+import noirPoster from '../../assets/noir/noir-poster.jpg';
 import './Projects.css';
+
+const DOUBLE_PRESS_MS = 600;
 
 const PROJECTS = [
   {
     id: 1,
-    title: 'DUSK',
-    shortTitle: 'DUSK',
-    category: 'App Móvil Fitness & HealthTech',
-    meta: '2025 — Actual',
-    url: '#/projects/dusk',
-    linkLabel: 'Explorar Landing',
-    isInternal: true,
-    stack: ['React Native', 'TypeScript', 'Expo SDK 54', 'NativeWind', 'Zustand', 'Supabase'],
-    desc: 'Landing page y aplicación premium offline-first para atletas de alto rendimiento. Integra arquitectura de running, levantamiento y nutrición con sincronización bidireccional en Supabase, GPS en background, Live Activities en iOS y diseño visual de alto impacto.',
-    accent: '#00f0ff',
-    height: 350,
-    width: 96
-  },
-  {
-    id: 2,
-    title: 'NOIR',
-    shortTitle: 'NOIR',
-    category: 'Streaming & Audio Experience',
-    meta: '2025 — Producto',
-    url: '#/projects/noir',
-    linkLabel: 'Explorar Landing',
-    isInternal: true,
-    stack: ['React', 'Web Audio API', 'CSS Grid', 'Framer Effects', 'UX Sound Design'],
-    desc: 'Landing page conceptual para servicio de música de alta fidelidad. Interfaz oscura inmersiva con reproductor interactivo en tiempo real, visualizador de frecuencias de audio, curaduría de vinilos exclusivos y diseño editorial refinado.',
-    accent: '#d4af37',
-    height: 330,
-    width: 90
-  },
-  {
-    id: 3,
-    title: 'M3mento',
-    shortTitle: 'M3mento',
-    category: 'Streetwear Concept & E-Commerce',
-    meta: '2024 — 2026',
-    url: '#/projects/m3mento',
-    linkLabel: 'Explorar Concepto',
-    isInternal: true,
-    stack: ['React', 'CSS Architecture', 'Blender 3D', 'UX/UI', 'Figma'],
-    desc: 'Experiencia digital y concepto e-commerce para marca de ropa contemporánea. Diseño brutalista e industrial con lookbook interactivo, selector de tallas y variantes, visor de prendas modeladas en 3D y flujo de compra optimizado.',
-    accent: '#e2e8f0',
-    height: 310,
-    width: 88
-  },
-  {
-    id: 4,
-    title: 'Nexus AI',
-    shortTitle: 'Nexus AI',
-    category: 'B2B SaaS / Orquestación IA',
-    meta: '2026 — SaaS Platform',
-    url: '#/projects/nexus',
-    linkLabel: 'Explorar Landing',
-    isInternal: true,
-    stack: ['React', 'TypeScript', 'Tailwind/CSS', 'Data Viz', 'Bento Grid UX'],
-    desc: 'Landing page B2B SaaS de alto rendimiento para plataforma de agentes autónomos y automatización de flujos de ingeniería. Incluye Bento Grid de características, simulador interactivo de workflows, toggle de precios y métricas en tiempo real.',
-    accent: '#818cf8',
-    height: 340,
-    width: 94
-  },
-  {
-    id: 5,
     title: 'Consejo Ciudadano CDMX',
     shortTitle: 'Consejo Ciudadano',
     category: 'Desarrollador Web Freelance',
@@ -76,15 +20,108 @@ const PROJECTS = [
     accent: '#94a3b8',
     height: 290,
     width: 98
+  },
+  {
+    id: 2,
+    title: 'DUSK',
+    shortTitle: 'DUSK',
+    category: 'App Móvil Fitness & HealthTech',
+    meta: '2025 — Actual',
+    url: '#/projects/dusk',
+    linkLabel: 'Explorar Landing',
+    isInternal: true,
+    stack: ['React Native', 'TypeScript', 'Expo SDK 54', 'NativeWind', 'Zustand', 'Supabase'],
+    desc: 'Landing page y aplicación premium offline-first para atletas de alto rendimiento. Integra arquitectura de running, levantamiento y nutrición con sincronización bidireccional en Supabase, GPS en background, Live Activities en iOS y diseño visual de alto impacto.',
+    accent: '#e11d48',
+    height: 350,
+    width: 96
+  },
+  {
+    id: 3,
+    title: 'NOIR',
+    shortTitle: 'NOIR',
+    category: 'Streaming & Audio Experience',
+    meta: '2025 — Producto',
+    url: 'https://rubenbf5.github.io/noir-music/',
+    linkLabel: 'Abrir Noir Music',
+    isInternal: false,
+    previewVideo: noirDemo,
+    previewPoster: noirPoster,
+    stack: ['Producto Web', 'Reproductor Interactivo', 'Biblioteca Musical', 'UX/UI'],
+    desc: 'Experiencia musical con reproductor visual, búsqueda y biblioteca de álbumes. El video muestra la navegación y los controles del proyecto publicado.',
+    accent: '#d4af37',
+    height: 330,
+    width: 90
+  },
+  {
+    id: 4,
+    title: 'M3mento',
+    shortTitle: 'M3mento',
+    category: 'Streetwear & Archivo Visual',
+    meta: '2024 — 2026',
+    url: '#/projects/m3mento',
+    linkLabel: 'Explorar Concepto',
+    isInternal: true,
+    stack: ['React', 'CSS', 'UX/UI', 'Catálogo Interactivo'],
+    desc: 'Archivo visual de M3mento con cinco prendas y una ficha interactiva para cada una. El catálogo permite explorar los gráficos, colores y vistas de cada pieza dentro de una interfaz oscura de inspiración editorial.',
+    accent: '#e2e8f0',
+    height: 310,
+    width: 88
+  },
+  {
+    id: 5,
+    title: 'Nexus AI',
+    shortTitle: 'Nexus AI',
+    category: 'B2B SaaS / Orquestación IA',
+    meta: '2026 — SaaS Platform',
+    url: '#/projects/nexus',
+    linkLabel: 'Explorar Landing',
+    isInternal: true,
+    stack: ['React', 'CSS Grid', 'Diseño Editorial', 'Workflows Interactivos'],
+    desc: 'Concepto de plataforma para coordinar agentes de IA. Combina una portada editorial de colores sólidos, capacidades de producto, ejemplos interactivos de workflows y una comparación de planes.',
+    accent: '#818cf8',
+    height: 340,
+    width: 94
+  },
+  {
+    id: 6,
+    title: 'Dra. Corazón de Jesús Barrientos Flores',
+    shortTitle: 'Dra. Cora',
+    category: 'Medicina Especializada · Landing Page',
+    meta: '2026 — Proyecto Web',
+    url: '#/projects/cora',
+    linkLabel: 'Explorar Landing',
+    isInternal: true,
+    stack: ['React', 'Diseño Web', 'UX/UI', 'Responsive'],
+    desc: 'Landing para la Dra. Cora Barrientos con una identidad de colores sólidos, información clara sobre sus especialidades y acceso directo para agendar una consulta.',
+    accent: '#7ca9bf',
+    height: 326,
+    width: 94
   }
 ];
 
 export default function Projects() {
   const [activeProjectId, setActiveProjectId] = useState(PROJECTS[0].id);
+  const lastBookPress = useRef({ projectId: null, time: 0 });
   const activeProject = PROJECTS.find((project) => project.id === activeProjectId);
 
-  const selectProject = (projectId) => {
-    setActiveProjectId(projectId);
+  const handleBookPress = (event, project) => {
+    const now = event.timeStamp;
+    const isSecondPress = lastBookPress.current.projectId === project.id
+      && now - lastBookPress.current.time < DOUBLE_PRESS_MS;
+
+    if (isSecondPress) {
+      lastBookPress.current = { projectId: null, time: 0 };
+      if (project.isInternal) {
+        window.location.assign(project.url);
+      } else {
+        window.open(project.url, '_blank', 'noopener,noreferrer');
+      }
+      return;
+    }
+
+    lastBookPress.current = { projectId: project.id, time: now };
+    setActiveProjectId(project.id);
   };
 
   return (
@@ -99,7 +136,7 @@ export default function Projects() {
             </p>
           </div>
           <p className="projects__instruction mono-text">
-            Presiona un volumen para consultar
+            Una pulsación: detalles · dos seguidas: abrir
           </p>
         </div>
 
@@ -125,9 +162,9 @@ export default function Projects() {
                     <button
                       type="button"
                       className={`project-book${isActive ? ' project-book--active' : ''}`}
-                      onClick={() => selectProject(project.id)}
+                      onClick={(event) => handleBookPress(event, project)}
                       aria-pressed={isActive}
-                      aria-label={`Ver detalles de ${project.title}`}
+                      aria-label={`Ver detalles de ${project.title}. Pulsa dos veces seguidas para abrir.`}
                     >
                       <span className="project-book__top" aria-hidden="true" />
                       <span className="project-book__edge" aria-hidden="true" />
@@ -173,6 +210,25 @@ export default function Projects() {
               </div>
 
               <p className="project-detail__desc">{activeProject.desc}</p>
+
+              {activeProject.previewVideo && (
+                <div className="project-detail__preview">
+                  <div className="project-detail__preview-heading mono-text">
+                    <span>RECORRIDO EN VIDEO</span>
+                    <span>{activeProject.title} MUSIC</span>
+                  </div>
+                  <video
+                    controls
+                    playsInline
+                    preload="none"
+                    poster={activeProject.previewPoster}
+                    aria-label={'Video de demostración de ' + activeProject.title}
+                  >
+                    <source src={activeProject.previewVideo} type="video/mp4" />
+                    Tu navegador no puede reproducir este video.
+                  </video>
+                </div>
+              )}
 
               <div className="project-detail__footer">
                 <div className="project-detail__stack">

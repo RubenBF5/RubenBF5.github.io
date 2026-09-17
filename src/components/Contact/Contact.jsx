@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { CV_ES, CV_EN, downloadCv } from '../../utils/downloadCv';
 import './Contact.css';
 
 export default function Contact() {
@@ -55,9 +56,10 @@ export default function Contact() {
             </a>
             <div className="contact__cv-downloads" aria-label="Descargar currículum">
               <a
-                href="/cv-ruben-barrientos-es.pdf"
+                href={CV_ES.url}
                 className="btn btn-secondary"
-                download="Ruben-Barrientos-CV-ES.pdf"
+                download={CV_ES.filename}
+                onClick={(event) => downloadCv(event, CV_ES)}
               >
                 CV Español
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -65,9 +67,10 @@ export default function Contact() {
                 </svg>
               </a>
               <a
-                href="/cv-ruben-barrientos-en.pdf"
+                href={CV_EN.url}
                 className="btn btn-secondary"
-                download="Ruben-Barrientos-CV-EN.pdf"
+                download={CV_EN.filename}
+                onClick={(event) => downloadCv(event, CV_EN)}
               >
                 CV English
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

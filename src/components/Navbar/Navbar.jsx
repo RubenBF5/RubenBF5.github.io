@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { CV_ES, downloadCv } from '../../utils/downloadCv';
 import './Navbar.css';
 
 const navLinks = [
@@ -75,9 +76,13 @@ export default function Navbar() {
           ))}
           <li>
             <a
-              href="#contact"
+              href={CV_ES.url}
               className="navbar__cta"
-              onClick={(e) => handleNavClick(e, '#contact')}
+              download={CV_ES.filename}
+              onClick={(event) => {
+                setMenuOpen(false);
+                downloadCv(event, CV_ES);
+              }}
             >
               Descargar CV
             </a>

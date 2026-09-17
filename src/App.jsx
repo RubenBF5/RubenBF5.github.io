@@ -13,6 +13,7 @@ const DuskLanding = lazy(() => import('./components/Landings/Dusk/DuskLanding'))
 const NoirLanding = lazy(() => import('./components/Landings/Noir/NoirLanding'));
 const M3mentoLanding = lazy(() => import('./components/Landings/M3mento/M3mentoLanding'));
 const NexusLanding = lazy(() => import('./components/Landings/Nexus/NexusLanding'));
+const CoraLanding = lazy(() => import('./components/Landings/Cora/CoraLanding'));
 
 function parseRoute() {
   const hash = window.location.hash.toLowerCase();
@@ -20,6 +21,7 @@ function parseRoute() {
   if (hash.startsWith('#/projects/noir')) return 'noir';
   if (hash.startsWith('#/projects/m3mento')) return 'm3mento';
   if (hash.startsWith('#/projects/nexus')) return 'nexus';
+  if (hash.startsWith('#/projects/cora')) return 'cora';
   return null;
 }
 
@@ -48,6 +50,7 @@ function App() {
         {route === 'noir' && <NoirLanding />}
         {route === 'm3mento' && <M3mentoLanding />}
         {route === 'nexus' && <NexusLanding />}
+        {route === 'cora' && <CoraLanding />}
       </Suspense>
     );
   }

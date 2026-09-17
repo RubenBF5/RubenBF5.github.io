@@ -1,304 +1,203 @@
 import { useState } from 'react';
-import LandingHeader from '../LandingHeader';
 import './NexusLanding.css';
+
+const workflows = [
+  {
+    id: 'refactor',
+    label: 'Refactorización',
+    title: 'Una migración, tres agentes coordinados.',
+    input: 'Migrar el servicio de autenticación de Node.js a Go y conservar los contratos de la API.',
+    steps: [
+      { number: '01', title: 'Analizar', detail: 'Revisar dependencias y contratos existentes.' },
+      { number: '02', title: 'Construir', detail: 'Preparar la nueva implementación en Go.' },
+      { number: '03', title: 'Validar', detail: 'Comparar resultados y ejecutar pruebas.' }
+    ]
+  },
+  {
+    id: 'triage',
+    label: 'Incidencias',
+    title: 'De la alerta a un plan de respuesta.',
+    input: 'Investigar un aumento de latencia después de los últimos despliegues.',
+    steps: [
+      { number: '01', title: 'Reunir', detail: 'Agrupar señales, cambios y registros.' },
+      { number: '02', title: 'Relacionar', detail: 'Identificar las causas más probables.' },
+      { number: '03', title: 'Proponer', detail: 'Preparar un plan de corrección revisable.' }
+    ]
+  },
+  {
+    id: 'audit',
+    label: 'Auditoría',
+    title: 'Más claridad en cada revisión.',
+    input: 'Revisar el tratamiento de datos sensibles en una API pública.',
+    steps: [
+      { number: '01', title: 'Inspeccionar', detail: 'Localizar puntos donde circulan datos sensibles.' },
+      { number: '02', title: 'Contrastar', detail: 'Comparar el flujo con las reglas del equipo.' },
+      { number: '03', title: 'Documentar', detail: 'Organizar hallazgos y próximos pasos.' }
+    ]
+  }
+];
+
+const capabilities = [
+  { number: '01', label: 'COORDINACIÓN', title: 'Conecta a tus agentes.', description: 'Distribuye tareas entre agentes especializados y mantén el contexto de cada paso en una sola vista.', tone: 'sand' },
+  { number: '02', label: 'CONTROL', title: 'Decide qué se ejecuta.', description: 'Revisa los resultados y conserva puntos de aprobación antes de aplicar cambios importantes.', tone: 'navy' },
+  { number: '03', label: 'VISIBILIDAD', title: 'Entiende cada resultado.', description: 'Sigue las decisiones, entradas y entregables de un flujo sin perder el hilo del trabajo.', tone: 'ice' },
+  { number: '04', label: 'ADAPTABILIDAD', title: 'Crece a tu ritmo.', description: 'Organiza flujos para desarrollo, operaciones y análisis desde el mismo espacio de trabajo.', tone: 'clay' }
+];
+
+const plans = [
+  { name: 'Developer', monthly: '$0', annual: '$0', detail: 'Para explorar el producto en proyectos individuales.', items: ['Flujos de ejemplo', 'Espacio personal', 'Vista de actividades'] },
+  { name: 'Scale Team', monthly: '$49', annual: '$39', detail: 'Para equipos que coordinan más trabajo en conjunto.', items: ['Workflows compartidos', 'Historial del equipo', 'Roles y revisiones'], featured: true },
+  { name: 'Enterprise', monthly: '$199', annual: '$159', detail: 'Para organizaciones con procesos y controles propios.', items: ['Espacios por equipo', 'Controles avanzados', 'Acompañamiento dedicado'] }
+];
 
 export default function NexusLanding() {
   const [selectedWorkflow, setSelectedWorkflow] = useState(0);
-  const [billingCycle, setBillingCycle] = useState('annual'); // 'monthly' | 'annual'
-
-  const workflows = [
-    {
-      id: 'refactor',
-      name: 'Refactorización & Microservicios',
-      input: 'Migrar servicio de autenticación de Node.js a Go manteniendo contratos gRPC',
-      steps: [
-        { title: 'Análisis AST & Dependencias', status: 'COMPLETADO', latency: '12ms', model: 'Nexus Inspector' },
-        { title: 'Generación Concurrente Go', status: 'COMPLETADO', latency: '28ms', model: 'DeepSeek R1 / Claude 3.7' },
-        { title: 'Sandbox de Tests Unitarios', status: '100% PASADO', latency: '14ms', model: 'Docker MicroVM' }
-      ]
-    },
-    {
-      id: 'triage',
-      name: 'Triage de Incidencias Críticas',
-      input: 'Correlacionar picos de latencia en Datadog con últimos 3 despliegues en Kubernetes',
-      steps: [
-        { title: 'Ingesta de Logs & Métricas', status: 'COMPLETADO', latency: '9ms', model: 'Vector Pipeline' },
-        { title: 'Aislamiento de Causa Raíz', status: 'IDENTIFICADO', latency: '34ms', model: 'Nexus Reasoning Engine' },
-        { title: 'Generación de Rollback PR', status: 'ENVIADO A GITHUB', latency: '18ms', model: 'Git Automation Tool' }
-      ]
-    },
-    {
-      id: 'compliance',
-      name: 'Auditoría de Seguridad & SOC2',
-      input: 'Verificar retención de datos sensibles (PII) en endpoints de API pública',
-      steps: [
-        { title: 'Escaneo Heurístico de Tráfico', status: 'COMPLETADO', latency: '15ms', model: 'Nexus DLP Sentinel' },
-        { title: 'Validación de Políticas SOC2', status: 'CUMPLIDO', latency: '22ms', model: 'Compliance Guard' },
-        { title: 'Reporte Cifrado SHA-256', status: 'CERTIFICADO', latency: '8ms', model: 'Security Vault' }
-      ]
-    }
-  ];
-
-  const currentWf = workflows[selectedWorkflow];
+  const [billingCycle, setBillingCycle] = useState('annual');
+  const workflow = workflows[selectedWorkflow];
 
   return (
     <div className="nexus-page">
-      <LandingHeader
-        brandName="NEXUS"
-        brandTag="Agentic Cloud"
-        accentColor="#818cf8"
-        navLinks={[
-          { label: 'Workflows', href: '#workflows' },
-          { label: 'Capacidades', href: '#features' },
-          { label: 'Arquitectura', href: '#architecture' },
-          { label: 'Precios', href: '#pricing' }
-        ]}
-      />
+      <section className="nexus-hero" id="top">
+        <header className="nexus-nav nexus-container">
+          <button type="button" className="nexus-nav__back" onClick={() => window.location.hash = ''} aria-label="Volver al portafolio">←</button>
+          <a className="nexus-nav__brand" href="#top">NEXUS<span>®</span></a>
+          <nav className="nexus-nav__links" aria-label="Navegación de Nexus">
+            <a href="#features">Producto</a>
+            <a href="#workflows">Soluciones</a>
+            <a href="#pricing">Planes</a>
+          </nav>
+          <a className="nexus-nav__cta" href="#workflows">EXPLORAR DEMO</a>
+        </header>
 
-      {/* HERO SECTION */}
-      <section className="nexus-hero">
-        <div className="nexus-hero__radial" aria-hidden="true" />
-        <div className="nexus-container">
-          <div className="nexus-pill">
-            <span className="nexus-pulse" />
-            <span>NEXUS ENGINE v3.2 • ENTERPRISE READY</span>
-          </div>
+        <div className="nexus-container nexus-hero__content">
+          <span className="nexus-eyebrow">UNA PLATAFORMA PARA LA IA QUE TRABAJA CONTIGO</span>
+          <h1>Ideas grandes.<br />Ejecución conectada.</h1>
+          <p>Diseña, coordina y supervisa flujos de agentes desde un solo lugar. Convierte tareas complejas en pasos claros para tu equipo.</p>
+          <a className="nexus-button nexus-button--light" href="#workflows">VER CÓMO FUNCIONA <span aria-hidden="true">↗</span></a>
+        </div>
 
-          <h1 className="nexus-hero__title">
-            Orquesta agentes autónomos <br />
-            <span className="nexus-gradient-text">a escala de producción.</span>
-          </h1>
-
-          <p className="nexus-hero__lead">
-            Despliega pipelines de razonamiento multi-modelo, ejecución en microVMs aisladas y observabilidad en tiempo real con latencia sub-45ms y certificación SOC2 Type II.
-          </p>
-
-          <div className="nexus-hero__actions">
-            <a href="#pricing" className="nexus-btn nexus-btn--primary">
-              Iniciar Prueba de 14 Días
-            </a>
-            <a href="#workflows" className="nexus-btn nexus-btn--secondary">
-              Ver Demo Interactiva ↓
-            </a>
-          </div>
-
-          {/* INTERACTIVE WORKFLOW PIPELINE SIMULATOR */}
-          <div className="nexus-console" id="workflows">
-            <div className="nexus-console__header">
-              <div className="nexus-console__dots">
-                <span />
-                <span />
-                <span />
-              </div>
-              <span className="nexus-console__title">nexus-orchestrator :: live-agent-pipeline</span>
-              <span className="nexus-console__status">● ONLINE</span>
+        <div className="nexus-container nexus-showcase" aria-label="Vista conceptual de la plataforma Nexus">
+          <article className="nexus-showcase__card nexus-showcase__card--left">
+            <span className="nexus-showcase__small">01 / IDEA</span>
+            <h2>Empieza con<br />una pregunta.</h2>
+            <p>¿Cómo puede mi equipo resolver esto mejor?</p>
+            <span className="nexus-showcase__corner">↗</span>
+          </article>
+          <article className="nexus-showcase__card nexus-showcase__card--main">
+            <div className="nexus-showcase__top"><span>NEXUS / WORKSPACE</span><span>● EN CURSO</span></div>
+            <h2>Un espacio.<br />Muchas posibilidades.</h2>
+            <div className="nexus-showcase__flow">
+              <div><span>01</span><strong>Entender el reto</strong><i /></div>
+              <div><span>02</span><strong>Coordinar agentes</strong><i /></div>
+              <div><span>03</span><strong>Entregar claridad</strong><i /></div>
             </div>
+            <div className="nexus-showcase__bottom"><span>AGENTES COORDINADOS</span><span>03 / 03</span></div>
+          </article>
+          <article className="nexus-showcase__card nexus-showcase__card--right">
+            <span className="nexus-showcase__small">03 / RESULTADO</span>
+            <h2>Avanza con<br />confianza.</h2>
+            <p>Una vista clara del trabajo, de principio a fin.</p>
+            <div className="nexus-showcase__mark">N.</div>
+          </article>
+        </div>
+      </section>
 
-            <div className="nexus-console__body">
-              <div className="nexus-workflow-nav">
-                {workflows.map((wf, idx) => (
-                  <button
-                    key={wf.id}
-                    type="button"
-                    className={`nexus-wf-btn ${selectedWorkflow === idx ? 'nexus-wf-btn--active' : ''}`}
-                    onClick={() => setSelectedWorkflow(idx)}
-                  >
-                    {wf.name}
-                  </button>
-                ))}
+      <section className="nexus-proof" aria-label="Resumen del concepto Nexus">
+        <div className="nexus-container">
+          <p>UNA FORMA MÁS CLARA DE TRABAJAR CON AGENTES</p>
+          <div className="nexus-proof__grid">
+            <div><strong>03</strong><span>Flujos para explorar</span></div>
+            <div><strong>04</strong><span>Capacidades principales</span></div>
+            <div><strong>01</strong><span>Espacio de trabajo</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section className="nexus-features" id="features">
+        <div className="nexus-container">
+          <div className="nexus-section-intro">
+            <span>PRODUCTO / 01</span>
+            <h2>Tu equipo puede<br />llegar más lejos.</h2>
+            <p>Nexus reúne las piezas de un flujo de trabajo inteligente para que cada idea tenga un camino visible hacia su resultado.</p>
+          </div>
+          <div className="nexus-feature-index" aria-label="Capacidades de Nexus">
+            {capabilities.map((item) => <a key={item.number} href={'#nexus-feature-' + item.number}>{item.label}</a>)}
+          </div>
+          <div className="nexus-feature-grid">
+            {capabilities.map((item) => (
+              <article className={'nexus-feature-card nexus-feature-card--' + item.tone} id={'nexus-feature-' + item.number} key={item.number}>
+                <div className="nexus-feature-card__top"><span>{item.label}</span><span>{item.number} / 04</span></div>
+                <div><h3>{item.title}</h3><p>{item.description}</p></div>
+                <span className="nexus-feature-card__arrow" aria-hidden="true">↗</span>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="nexus-workflows" id="workflows">
+        <div className="nexus-container">
+          <div className="nexus-section-intro nexus-section-intro--left">
+            <span>SOLUCIONES / 02</span>
+            <h2>De una tarea a<br />un flujo completo.</h2>
+            <p>Elige un ejemplo y observa cómo Nexus organiza la petición en pasos que puedes revisar.</p>
+          </div>
+          <div className="nexus-workflow-panel">
+            <div className="nexus-workflow-tabs" aria-label="Ejemplos de workflow">
+              {workflows.map((item, index) => (
+                <button key={item.id} type="button" className={selectedWorkflow === index ? 'active' : ''} onClick={() => setSelectedWorkflow(index)} aria-pressed={selectedWorkflow === index}>{item.label}</button>
+              ))}
+            </div>
+            <div className="nexus-workflow-panel__body">
+              <div className="nexus-workflow-prompt">
+                <span>INSTRUCCIÓN / {String(selectedWorkflow + 1).padStart(2, '0')}</span>
+                <h3>{workflow.title}</h3>
+                <p>“{workflow.input}”</p>
               </div>
-
-              <div className="nexus-input-box">
-                <span className="nexus-input-lbl">PROMPT DISPARADOR:</span>
-                <p>"{currentWf.input}"</p>
-              </div>
-
-              <div className="nexus-steps-pipeline">
-                {currentWf.steps.map((step, idx) => (
-                  <div key={idx} className="nexus-step-card">
-                    <div className="nexus-step-card__top">
-                      <span className="nexus-step-num">0{idx + 1}</span>
-                      <span className="nexus-step-latency">{step.latency}</span>
-                    </div>
-                    <h4 className="nexus-step-title">{step.title}</h4>
-                    <div className="nexus-step-footer">
-                      <span className="nexus-step-model">{step.model}</span>
-                      <span className="nexus-step-status">{step.status}</span>
-                    </div>
+              <div className="nexus-workflow-steps">
+                {workflow.steps.map((step) => (
+                  <div key={step.number}>
+                    <span>{step.number}</span>
+                    <strong>{step.title}</strong>
+                    <p>{step.detail}</p>
                   </div>
                 ))}
               </div>
             </div>
           </div>
-
-          {/* SOCIAL PROOF METRICS */}
-          <div className="nexus-metrics-strip">
-            <div className="nexus-metric-box">
-              <strong>&lt; 45ms</strong>
-              <span>Latencia Promedio en Edge</span>
-            </div>
-            <div className="nexus-metric-box">
-              <strong>99.99%</strong>
-              <span>Uptime SLA Garantizado</span>
-            </div>
-            <div className="nexus-metric-box">
-              <strong>1.2B</strong>
-              <span>Tokens Orquestados / Día</span>
-            </div>
-            <div className="nexus-metric-box">
-              <strong>SOC2 + HIPAA</strong>
-              <span>Cifrado Militar de Extremo a Extremo</span>
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* BENTO GRID CAPABILITIES */}
-      <section className="nexus-section" id="features">
+      <section className="nexus-pricing" id="pricing">
         <div className="nexus-container">
-          <div className="nexus-section-header">
-            <span className="nexus-tag">CAPACIDADES DE PLATAFORMA</span>
-            <h2 className="nexus-section-title">Infraestructura diseñada para fiabilidad extrema</h2>
-            <p className="nexus-section-sub">Elimina alucinaciones, controla costos de API y orquesta agentes que interactúan con tus bases de datos y repositorios de forma segura.</p>
+          <div className="nexus-section-intro nexus-section-intro--light">
+            <span>PLANES / 03</span>
+            <h2>Un plan para<br />cada etapa.</h2>
+            <p>Una comparación de planes para este concepto de producto.</p>
           </div>
-
-          <div className="nexus-bento">
-            <div className="nexus-bento__item nexus-bento__item--span2">
-              <div className="nexus-bento__icon">⚡</div>
-              <h3>Enrutamiento Inteligente Multi-Modelo</h3>
-              <p>
-                Analiza la complejidad semántica de cada instrucción entrante y la despacha al LLM idóneo (Claude 3.7, DeepSeek R1, GPT-4o o modelos locales open-source), reduciendo el costo operativo hasta en un 68%.
-              </p>
-            </div>
-
-            <div className="nexus-bento__item">
-              <div className="nexus-bento__icon">🛡️</div>
-              <h3>Sandboxes Efímeros MicroVM</h3>
-              <p>
-                Cada ejecución de código generada por la IA corre en contenedores Firecracker desechables aislados a nivel de kernel.
-              </p>
-            </div>
-
-            <div className="nexus-bento__item">
-              <div className="nexus-bento__icon">📊</div>
-              <h3>Observabilidad & Trazabilidad de Tokens</h3>
-              <p>
-                Replay paso a paso de árboles de pensamiento (Chain-of-Thought) con inspección de prompts y auditoría de llamadas a funciones.
-              </p>
-            </div>
-
-            <div className="nexus-bento__item nexus-bento__item--span2">
-              <div className="nexus-bento__icon">🔄</div>
-              <h3>CI/CD Autónomo con Self-Healing</h3>
-              <p>
-                Conecta Nexus a tus flujos de GitHub Actions. Si un test unitario o build falla en staging, el agente genera un patch correctivo y abre un Pull Request documentado automáticamente.
-              </p>
-            </div>
+          <div className="nexus-billing-toggle" aria-label="Periodo de facturación">
+            <button type="button" className={billingCycle === 'monthly' ? 'active' : ''} onClick={() => setBillingCycle('monthly')} aria-pressed={billingCycle === 'monthly'}>MENSUAL</button>
+            <button type="button" className={billingCycle === 'annual' ? 'active' : ''} onClick={() => setBillingCycle('annual')} aria-pressed={billingCycle === 'annual'}>ANUAL</button>
           </div>
-        </div>
-      </section>
-
-      {/* INTERACTIVE PRICING */}
-      <section className="nexus-section nexus-section--alt" id="pricing">
-        <div className="nexus-container">
-          <div className="nexus-section-header">
-            <span className="nexus-tag">PLANES & ESCALABILIDAD</span>
-            <h2 className="nexus-section-title">Precios transparentes y sin sorpresas</h2>
-            <p className="nexus-section-sub">Comienza gratis en tus proyectos personales y escala a millones de llamadas cuando tu equipo esté listo.</p>
-
-            <div className="nexus-billing-toggle">
-              <button
-                type="button"
-                className={billingCycle === 'monthly' ? 'active' : ''}
-                onClick={() => setBillingCycle('monthly')}
-              >
-                Mensual
-              </button>
-              <button
-                type="button"
-                className={billingCycle === 'annual' ? 'active' : ''}
-                onClick={() => setBillingCycle('annual')}
-              >
-                Anual <span className="nexus-save-badge">Ahorra 20%</span>
-              </button>
-            </div>
-          </div>
-
           <div className="nexus-pricing-grid">
-            {/* TIER 1 */}
-            <div className="nexus-plan-card">
-              <span className="nexus-plan-name">DEVELOPER</span>
-              <div className="nexus-plan-price">
-                <strong>$0</strong>
-                <span>/ siempre</span>
-              </div>
-              <p>Para prototipar y explorar agentes en proyectos individuales.</p>
-              <ul className="nexus-plan-list">
-                <li>✓ Hasta 5 agentes concurrentes</li>
-                <li>✓ 50,000 ejecuciones / mes</li>
-                <li>✓ MicroVMs con 512MB RAM</li>
-                <li>✓ Comunidad en Discord</li>
-              </ul>
-              <button type="button" className="nexus-btn nexus-btn--secondary">
-                Comenzar Gratis
-              </button>
-            </div>
-
-            {/* TIER 2 - POPULAR */}
-            <div className="nexus-plan-card nexus-plan-card--featured">
-              <div className="nexus-featured-pill">RECOMENDADO</div>
-              <span className="nexus-plan-name">SCALE TEAM</span>
-              <div className="nexus-plan-price">
-                <strong>{billingCycle === 'annual' ? '$39' : '$49'}</strong>
-                <span>/ mes</span>
-              </div>
-              <p>Para startups y equipos de ingeniería en crecimiento activo.</p>
-              <ul className="nexus-plan-list">
-                <li>✓ Agentes ilimitados</li>
-                <li>✓ 1,000,000 ejecuciones / mes</li>
-                <li>✓ Multi-Model Smart Router</li>
-                <li>✓ MicroVMs aceleradas de 2GB RAM</li>
-                <li>✓ Soporte prioritario 24/7</li>
-              </ul>
-              <button type="button" className="nexus-btn nexus-btn--primary">
-                Iniciar Prueba Pro
-              </button>
-            </div>
-
-            {/* TIER 3 */}
-            <div className="nexus-plan-card">
-              <span className="nexus-plan-name">ENTERPRISE</span>
-              <div className="nexus-plan-price">
-                <strong>{billingCycle === 'annual' ? '$159' : '$199'}</strong>
-                <span>/ mes</span>
-              </div>
-              <p>Máxima gobernanza, despliegue VPC dedicado y SLA del 99.99%.</p>
-              <ul className="nexus-plan-list">
-                <li>✓ Despliegue en tu propia VPC (AWS/GCP)</li>
-                <li>✓ Zero Data Retention contractual</li>
-                <li>✓ Auditoría SOC2 Type II & HIPAA</li>
-                <li>✓ Ingeniero de soluciones dedicado</li>
-              </ul>
-              <button type="button" className="nexus-btn nexus-btn--secondary">
-                Contactar Ventas
-              </button>
-            </div>
+            {plans.map((plan) => (
+              <article key={plan.name} className={'nexus-plan-card' + (plan.featured ? ' nexus-plan-card--featured' : '')}>
+                <span className="nexus-plan-card__name">{plan.name}</span>
+                <div className="nexus-plan-card__price"><strong>{plan[billingCycle]}</strong><span>/ mes</span></div>
+                <p>{plan.detail}</p>
+                <ul>{plan.items.map((item) => <li key={item}>{item}</li>)}</ul>
+              </article>
+            ))}
           </div>
+          <p className="nexus-pricing__note">Precios ilustrativos para la demostración del concepto.</p>
         </div>
       </section>
 
-      {/* FOOTER */}
       <footer className="nexus-footer">
-        <div className="nexus-container nexus-footer__box">
-          <span className="nexus-footer__brand">NEXUS AI SYSTEMS</span>
-          <p>Orquestación de infraestructura inteligente para la próxima era de software autónomo.</p>
-          <button
-            type="button"
-            onClick={() => window.location.hash = ''}
-            className="nexus-btn nexus-btn--primary"
-          >
-            ← Volver al Portafolio
-          </button>
+        <div className="nexus-container nexus-footer__inner">
+          <span>NEXUS®</span>
+          <p>Ideas grandes. Ejecución conectada.</p>
+          <button type="button" onClick={() => window.location.hash = ''}>VOLVER AL PORTAFOLIO ↗</button>
         </div>
       </footer>
     </div>
