@@ -104,21 +104,28 @@
 /* CTA Curriculum Button */
 .navbar__cta {
   display: inline-flex;
-  padding: 8px 16px;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 17px;
   border-radius: var(--radius-full); /* Round pill button */
-  background: var(--gradient-primary);
-  color: #fff;
-  font-size: 0.82rem;
-  font-weight: 550;
-  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.08);
-  transition: all var(--transition-base);
+  background: #f3f4f6;
+  color: #111827;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  transition: background-color var(--transition-base),
+              transform var(--transition-base),
+              box-shadow var(--transition-base);
   flex-shrink: 0;
 }
 
 .navbar__cta:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 15px rgba(255, 255, 255, 0.15);
-  opacity: 0.95;
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.24);
 }
 
 /* Mobile Toggler */
